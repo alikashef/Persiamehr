@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState } from "react";
 import {
   IconSend,
   IconCheck,
@@ -8,26 +8,19 @@ import {
   IconBrandLinkedin,
   IconPhone,
   IconMail,
+  IconLoader2,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { submitContact, type ContactFormState } from "@/app/actions/contact";
+
+const initialState: ContactFormState = { success: false };
 
 export default function CTA() {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
-    name: "",
-    company: "",
-    email: "",
-    message: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+  const [state, action, pending] = useActionState(submitContact, initialState);
 
   return (
     <section id="contact" className="py-24 bg-white relative overflow-hidden">
@@ -61,7 +54,7 @@ export default function CTA() {
           {/* Contact form */}
           <Card className="rounded-2xl border-neutral-100 bg-white p-0 shadow-sm lg:col-span-3">
             <CardContent className="p-8">
-            {submitted ? (
+            {state.success ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
                   <IconCheck size={30} className="text-emerald-500" />
@@ -75,7 +68,7 @@ export default function CTA() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form action={action} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <Label className="mb-2 block text-sm font-semibold text-neutral-700">
@@ -83,10 +76,9 @@ export default function CTA() {
                     </Label>
                     <Input
                       type="text"
+                      name="name"
                       required
                       placeholder="دکتر احمد رضایی"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
                       className="h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-primary-400 focus-visible:bg-white focus-visible:ring-primary-100"
                     />
                   </div>
@@ -96,11 +88,8 @@ export default function CTA() {
                     </Label>
                     <Input
                       type="text"
+                      name="company"
                       placeholder="شرکت تجهیزات پزشکی..."
-                      value={form.company}
-                      onChange={(e) =>
-                        setForm({ ...form, company: e.target.value })
-                      }
                       className="h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-primary-400 focus-visible:bg-white focus-visible:ring-primary-100"
                     />
                   </div>
@@ -112,11 +101,10 @@ export default function CTA() {
                   </Label>
                   <Input
                     type="email"
+                    name="email"
                     required
                     placeholder="example@company.com"
                     dir="ltr"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-primary-400 focus-visible:bg-white focus-visible:ring-primary-100"
                   />
                 </div>
@@ -127,27 +115,35 @@ export default function CTA() {
                   </Label>
                   <Textarea
                     rows={4}
+                    name="message"
                     required
                     placeholder="در چه زمینه‌ای به مشاوره نیاز دارید؟"
-                    value={form.message}
-                    onChange={(e) =>
-                      setForm({ ...form, message: e.target.value })
-                    }
                     className="min-h-32 resize-none rounded-xl border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-primary-400 focus-visible:bg-white focus-visible:ring-primary-100"
                   />
                 </div>
 
+                {state.error && (
+                  <p className="text-sm text-red-500">{state.error}</p>
+                )}
+
                 <Button
                   type="submit"
                   size="lg"
-                  className="h-12 w-full rounded-xl bg-primary-500 py-4 font-semibold text-white shadow-lg shadow-primary-500/25 hover:-translate-y-0.5 hover:bg-primary-600 hover:shadow-primary-500/35"
+                  disabled={pending}
+                  className="h-12 w-full rounded-xl bg-primary-500 py-4 font-semibold text-white shadow-lg shadow-primary-500/25 hover:-translate-y-0.5 hover:bg-primary-600 hover:shadow-primary-500/35 disabled:opacity-70"
                 >
-                  <IconSend size={17} />
-                  ارسال پیام
-                  <IconArrowLeft
-                    size={15}
-                    className="rtl:rotate-180 group-hover:-translate-x-0.5 transition-transform"
-                  />
+                  {pending ? (
+                    <IconLoader2 size={17} className="animate-spin" />
+                  ) : (
+                    <IconSend size={17} />
+                  )}
+                  {pending ? "در حال ارسال..." : "ارسال پیام"}
+                  {!pending && (
+                    <IconArrowLeft
+                      size={15}
+                      className="rtl:rotate-180 group-hover:-translate-x-0.5 transition-transform"
+                    />
+                  )}
                 </Button>
               </form>
             )}
