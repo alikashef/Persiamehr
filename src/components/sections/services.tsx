@@ -1,82 +1,41 @@
-import {
-  IconUserStar,
-  IconSitemap,
-  IconTrendingUp,
-  IconMicroscope,
-  IconSchool,
-  IconCalendarEvent,
-  IconArrowLeft,
-} from "@tabler/icons-react";
+import { IconArrowRight } from "@tabler/icons-react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { copy, getLocaleDirection, localizePath, type Locale } from "@/lib/i18n";
+import { getServices } from "@/lib/services";
+import { cn } from "@/lib/utils";
 
-const services = [
-  {
-    icon: IconUserStar,
-    title: "مشاوره اجرایی",
-    description:
-      "ارائه مشاوره استراتژیک در سطح مدیریت ارشد برای بهینه‌سازی عملکرد شرکت‌های فعال در حوزه تجهیزات پزشکی.",
-    tags: ["استراتژی", "رهبری", "C-Suite"],
-    highlight: true,
-  },
-  {
-    icon: IconSitemap,
-    title: "طراحی ساختار سازمانی",
-    description:
-      "بازطراحی و بهینه‌سازی ساختارهای سازمانی متناسب با الزامات صنعت پزشکی و استانداردهای بین‌المللی.",
-    tags: ["OD", "فرایند", "KPI"],
-    highlight: false,
-  },
-  {
-    icon: IconTrendingUp,
-    title: "توسعه بازار پزشکی",
-    description:
-      "تحلیل بازار، شناسایی فرصت‌های رشد و تدوین استراتژی ورود به بازارهای جدید برای تولیدکنندگان تجهیزات پزشکی.",
-    tags: ["بازار", "صادرات", "Market Entry"],
-    highlight: false,
-  },
-  {
-    icon: IconCalendarEvent,
-    title: "کنگره و سمینار",
-    description:
-      "طراحی، سازماندهی و اجرای کنگره‌های تخصصی پزشکی در سطح ملی و بین‌المللی با رویکرد علمی و تجاری.",
-    tags: ["کنگره", "CME", "CPD"],
-    highlight: false,
-  },
-  {
-    icon: IconSchool,
-    title: "آموزش و کارگاه",
-    description:
-      "برگزاری دوره‌های آموزشی، کارگاه‌های تخصصی و برنامه‌های Fellowship برای پزشکان و مدیران صنعت.",
-    tags: ["Fellowship", "Workshop", "Online"],
-    highlight: false,
-  },
-  {
-    icon: IconMicroscope,
-    title: "تحقیق و توسعه",
-    description:
-      "تسهیل همکاری‌های پژوهشی بین شرکت‌های تجهیزات پزشکی، مراکز درمانی و دانشگاه‌های علوم پزشکی.",
-    tags: ["R&D", "کلینیکال", "Publication"],
-    highlight: false,
-  },
-];
+type ServicesProps = {
+  locale?: Locale;
+};
 
-export default function Services() {
+export default function Services({ locale = "fa" }: ServicesProps) {
+  const services = getServices(locale);
+  const t = copy[locale].servicesSection;
+  const dir = getLocaleDirection(locale);
+
   return (
-    <section id="services" className="py-24 bg-white">
+    <section
+      id="services"
+      dir={dir}
+      className={cn("py-24 bg-white", locale === "en" && "text-right")}
+    >
       <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
         {/* Section header */}
-        <div className="max-w-2xl mb-16">
+        <div className=" mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-50 border border-primary-100 rounded-full text-primary-600 text-xs font-semibold mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-primary-500" />
-            خدمات تخصصی
+            {t.eyebrow}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 leading-tight mb-5">
-            راهکارهای جامع برای{" "}
-            <span className="gradient-text">رشد پایدار</span>{" "}
-            در صنعت پزشکی
+            {t.titlePrefix}{" "}
+            <span className="gradient-text">{t.titleHighlight}</span>{" "}
+            {t.titleSuffix}
           </h2>
           <p className="text-lg text-neutral-500 leading-8">
-            از مشاوره استراتژیک تا اجرای برنامه‌های آموزشی، پرسیا مهر در تمام
-            مراحل توسعه کسب‌وکار پزشکی همراه شما است.
+            {t.description}
           </p>
         </div>
 
@@ -85,17 +44,18 @@ export default function Services() {
           {services.map((s, i) => {
             const Icon = s.icon;
             return (
-              <div
+              <Card
                 key={s.title}
                 className={`
-                  card-hover group relative rounded-2xl p-7 border transition-all duration-200 cursor-pointer
+                  card-hover group relative cursor-pointer rounded-2xl p-0 transition-all duration-200
                   ${
                     s.highlight
-                      ? "bg-primary-500 border-primary-500 text-white shadow-xl shadow-primary-500/25"
-                      : "bg-white border-neutral-100 hover:border-primary-200"
+                      ? "border-primary-500 bg-primary-500 text-white shadow-xl shadow-primary-500/25"
+                      : "border-neutral-100 bg-white hover:border-primary-200"
                   }
                 `}
               >
+                <CardContent className="p-7">
                 {/* Icon */}
                 <div
                   className={`
@@ -114,13 +74,13 @@ export default function Services() {
                 </div>
 
                 {/* Title */}
-                <h3
+                <CardTitle
                   className={`text-lg font-bold mb-3 ${
                     s.highlight ? "text-white" : "text-neutral-900"
                   }`}
                 >
                   {s.title}
-                </h3>
+                </CardTitle>
 
                 {/* Description */}
                 <p
@@ -128,14 +88,15 @@ export default function Services() {
                     s.highlight ? "text-primary-100" : "text-neutral-500"
                   }`}
                 >
-                  {s.description}
+                  {s.summary}
                 </p>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-6">
                   {s.tags.map((tag) => (
-                    <span
+                    <Badge
                       key={tag}
+                      variant={s.highlight ? "secondary" : "outline"}
                       className={`text-xs px-2.5 py-1 rounded-lg font-medium ${
                         s.highlight
                           ? "bg-white/15 text-white"
@@ -143,25 +104,29 @@ export default function Services() {
                       }`}
                     >
                       {tag}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
 
                 {/* Link */}
-                <a
-                  href="#contact"
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="sm"
                   className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-all group/link ${
                     s.highlight
                       ? "text-white/80 hover:text-white"
-                      : "text-primary-500 hover:text-primary-700"
+                    : "text-primary-500 hover:text-primary-700"
                   }`}
                 >
-                  بیشتر بدانید
-                  <IconArrowLeft
-                    size={14}
-                    className="rtl:rotate-180 group-hover/link:-translate-x-0.5 transition-transform"
-                  />
-                </a>
+                  <Link href={localizePath(`/services/${s.slug}`, locale)}>
+                    {t.more}
+                    <IconArrowRight
+                      size={14}
+                      className="rtl:rotate-180 group-hover/link:-translate-x-0.5 transition-transform ltr:rotate-180 ltr:group-hover/link:translate-x-0.5"
+                    />
+                  </Link>
+                </Button>
 
                 {/* Background number */}
                 <span
@@ -171,7 +136,8 @@ export default function Services() {
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-              </div>
+                </CardContent>
+              </Card>
             );
           })}
         </div>

@@ -9,6 +9,11 @@ import {
   IconPhone,
   IconMail,
 } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function CTA() {
   const [submitted, setSubmitted] = useState(false);
@@ -47,14 +52,15 @@ export default function CTA() {
             <span className="gradient-text">رشد می‌دهیم</span>
           </h2>
           <p className="text-lg text-neutral-500 leading-8">
-            با تیم مشاوران ارشد پرسیا مهر در تماس باشید. اولین جلسه مشاوره
+            با تیم مشاوران ارشد پرشیامهر در تماس باشید. اولین جلسه مشاوره
             کاملاً رایگان است.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-5 gap-10 items-start">
           {/* Contact form */}
-          <div className="lg:col-span-3 bg-white border border-neutral-100 rounded-2xl p-8 shadow-sm">
+          <Card className="rounded-2xl border-neutral-100 bg-white p-0 shadow-sm lg:col-span-3">
+            <CardContent className="p-8">
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
@@ -64,7 +70,7 @@ export default function CTA() {
                   پیام شما دریافت شد
                 </h3>
                 <p className="text-neutral-500 text-sm leading-7 max-w-sm">
-                  تیم پرسیا مهر در اولین فرصت با شما تماس خواهد گرفت. معمولاً
+                  تیم پرشیامهر در اولین فرصت با شما تماس خواهد گرفت. معمولاً
                   ظرف ۲۴ ساعت کاری پاسخ می‌دهیم.
                 </p>
               </div>
@@ -72,54 +78,54 @@ export default function CTA() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-semibold text-neutral-700 mb-2">
+                    <Label className="mb-2 block text-sm font-semibold text-neutral-700">
                       نام و نام‌خانوادگی
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       type="text"
                       required
                       placeholder="دکتر احمد رضایی"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-primary-400 focus:bg-white focus:ring-2 focus:ring-primary-100 transition-all"
+                      className="h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-primary-400 focus-visible:bg-white focus-visible:ring-primary-100"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-neutral-700 mb-2">
+                    <Label className="mb-2 block text-sm font-semibold text-neutral-700">
                       شرکت / سازمان
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       type="text"
                       placeholder="شرکت تجهیزات پزشکی..."
                       value={form.company}
                       onChange={(e) =>
                         setForm({ ...form, company: e.target.value })
                       }
-                      className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-primary-400 focus:bg-white focus:ring-2 focus:ring-primary-100 transition-all"
+                      className="h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-primary-400 focus-visible:bg-white focus-visible:ring-primary-100"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-neutral-700 mb-2">
+                  <Label className="mb-2 block text-sm font-semibold text-neutral-700">
                     ایمیل
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     type="email"
                     required
                     placeholder="example@company.com"
                     dir="ltr"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-primary-400 focus:bg-white focus:ring-2 focus:ring-primary-100 transition-all"
+                    className="h-12 rounded-xl border-neutral-200 bg-neutral-50 px-4 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-primary-400 focus-visible:bg-white focus-visible:ring-primary-100"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-neutral-700 mb-2">
+                  <Label className="mb-2 block text-sm font-semibold text-neutral-700">
                     پیام شما
-                  </label>
-                  <textarea
+                  </Label>
+                  <Textarea
                     rows={4}
                     required
                     placeholder="در چه زمینه‌ای به مشاوره نیاز دارید؟"
@@ -127,13 +133,14 @@ export default function CTA() {
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-primary-400 focus:bg-white focus:ring-2 focus:ring-primary-100 transition-all resize-none"
+                    className="min-h-32 resize-none rounded-xl border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:border-primary-400 focus-visible:bg-white focus-visible:ring-primary-100"
                   />
                 </div>
 
-                <button
+                <Button
                   type="submit"
-                  className="group w-full py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2.5 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/35 transition-all duration-200 hover:-translate-y-0.5"
+                  size="lg"
+                  className="h-12 w-full rounded-xl bg-primary-500 py-4 font-semibold text-white shadow-lg shadow-primary-500/25 hover:-translate-y-0.5 hover:bg-primary-600 hover:shadow-primary-500/35"
                 >
                   <IconSend size={17} />
                   ارسال پیام
@@ -141,18 +148,22 @@ export default function CTA() {
                     size={15}
                     className="rtl:rotate-180 group-hover:-translate-x-0.5 transition-transform"
                   />
-                </button>
+                </Button>
               </form>
             )}
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Right: Contact info + feature list */}
           <div className="lg:col-span-2 space-y-6">
             {/* Direct contact */}
-            <div className="bg-neutral-50 border border-neutral-100 rounded-2xl p-6 space-y-4">
-              <h3 className="text-sm font-bold text-neutral-900">
+            <Card className="rounded-2xl border-neutral-100 bg-neutral-50 p-0">
+              <CardHeader className="p-6 pb-0">
+              <CardTitle className="text-sm font-bold text-neutral-900">
                 تماس مستقیم
-              </h3>
+              </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 p-6 pt-4">
               <a
                 href="tel:+982188001234"
                 className="flex items-center gap-3 group"
@@ -198,7 +209,8 @@ export default function CTA() {
                   </div>
                 </div>
               </a>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Promise cards */}
             {[
@@ -215,10 +227,11 @@ export default function CTA() {
                 desc: "تمام اطلاعات کسب‌وکار شما محفوظ می‌ماند",
               },
             ].map((p) => (
-              <div
+              <Card
                 key={p.title}
-                className="flex items-start gap-3 bg-white border border-neutral-100 rounded-xl p-4"
+                className="rounded-xl border-neutral-100 bg-white p-0"
               >
+                <CardContent className="flex items-start gap-3 p-4">
                 <div className="w-5 h-5 rounded-full bg-primary-500 flex items-center justify-center shrink-0 mt-0.5">
                   <IconCheck size={11} className="text-white" />
                 </div>
@@ -228,7 +241,8 @@ export default function CTA() {
                   </div>
                   <div className="text-xs text-neutral-500 mt-0.5">{p.desc}</div>
                 </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>

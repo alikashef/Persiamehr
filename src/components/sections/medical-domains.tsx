@@ -1,12 +1,13 @@
+import Link from "next/link";
 import {
   IconCut,
   IconActivityHeartbeat,
-  IconGenderFemale,
-  IconEye,
-  IconRobot,
   IconHeartbeat,
-  IconArrowLeft,
+  IconArrowRight,
 } from "@tabler/icons-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 const domains = [
   {
@@ -36,33 +37,7 @@ const domains = [
     products: ["مش TE", "مش PP", "تاکر"],
     count: "۲۰+ محصول",
   },
-  {
-    icon: IconGenderFemale,
-    title: "زنان و زایمان",
-    titleEn: "Gynecology",
-    description:
-      "تجهیزات تخصصی زنان شامل هیستروسکوپ، مانیپولاتور رحم و ابزار لاپاروسکوپی妇科.",
-    products: ["هیستروسکوپ", "مانیپولاتور", "مورسلاتور"],
-    count: "۳۵+ محصول",
-  },
-  {
-    icon: IconEye,
-    title: "آندوسکوپی",
-    titleEn: "Endoscopy",
-    description:
-      "سیستم‌های آندوسکوپی دستگاه گوارش، برونکوسکوپی و رینوسکوپی از برندهای طراز اول جهان.",
-    products: ["گاستروسکوپ", "کولونوسکوپ", "اولتراسوند"],
-    count: "۵۰+ محصول",
-  },
-  {
-    icon: IconRobot,
-    title: "جراحی رباتیک",
-    titleEn: "Robotic Surgery",
-    description:
-      "آموزش، مشاوره فنی و پشتیبانی برای سیستم‌های جراحی رباتیک نسل جدید در مراکز پیشرفته.",
-    products: ["Da Vinci", "Senhance", "Hugo"],
-    count: "مشاوره تخصصی",
-  },
+ 
 ];
 
 export default function MedicalDomains() {
@@ -80,24 +55,24 @@ export default function MedicalDomains() {
             <span className="gradient-text">تخصص‌های جراحی</span>
           </h2>
           <p className="text-base text-neutral-500 leading-8">
-            پرسیا مهر در شش حوزه تخصصی پزشکی، خدمات یکپارچه آموزش، تجهیزات و
+            پرشیامهر در شش حوزه تخصصی پزشکی، خدمات یکپارچه آموزش، تجهیزات و
             مشاوره ارائه می‌دهد.
           </p>
         </div>
 
         {/* Domain grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {domains.map((domain, i) => {
+          {domains.map((domain) => {
             const Icon = domain.icon;
             return (
-              <div
+              <Card
                 key={domain.title}
-                className="card-hover group relative bg-white border border-neutral-100 rounded-2xl overflow-hidden"
+                className="card-hover group relative gap-0 overflow-hidden rounded-2xl border-neutral-100 bg-white p-0"
               >
                 {/* Top color bar */}
                 <div className="h-1 w-full bg-gradient-to-l from-primary-300 via-primary-500 to-primary-700" />
 
-                <div className="p-7">
+                <CardContent className="p-7">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-5">
                     <div className="relative">
@@ -105,15 +80,18 @@ export default function MedicalDomains() {
                         <Icon size={22} className="text-primary-500" />
                       </div>
                     </div>
-                    <span className="text-xs text-neutral-400 font-medium bg-neutral-50 px-3 py-1 rounded-full border border-neutral-100">
+                    <Badge
+                      variant="outline"
+                      className="h-7 rounded-full border-neutral-100 bg-neutral-50 px-3 text-xs font-medium text-neutral-400"
+                    >
                       {domain.count}
-                    </span>
+                    </Badge>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-bold text-neutral-900 mb-0.5 group-hover:text-primary-600 transition-colors">
+                  <CardTitle className="mb-0.5 text-lg font-bold text-neutral-900 transition-colors group-hover:text-primary-600">
                     {domain.title}
-                  </h3>
+                  </CardTitle>
                   <p className="text-xs text-neutral-400 font-medium tracking-wide mb-4">
                     {domain.titleEn}
                   </p>
@@ -126,33 +104,38 @@ export default function MedicalDomains() {
                   {/* Product chips */}
                   <div className="flex flex-wrap gap-2">
                     {domain.products.map((p) => (
-                      <span
+                      <Badge
                         key={p}
-                        className="text-xs px-3 py-1.5 bg-primary-50 text-primary-600 rounded-lg font-medium border border-primary-100 group-hover:bg-primary-100 transition-colors"
+                        variant="outline"
+                        className="h-7 rounded-lg border-primary-100 bg-primary-50 px-3 text-xs font-medium text-primary-600 transition-colors group-hover:bg-primary-100"
                       >
                         {p}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
 
                   {/* Learn more */}
                   <div className="mt-6 pt-5 border-t border-neutral-100">
-                    <a
-                      href="#contact"
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-400 hover:text-primary-500 group/link transition-colors"
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-0 text-xs font-semibold text-neutral-400 hover:bg-transparent hover:text-primary-500"
                     >
-                      اطلاعات بیشتر
-                      <IconArrowLeft
-                        size={12}
-                        className="rtl:rotate-180 group-hover/link:-translate-x-0.5 transition-transform"
-                      />
-                    </a>
+                      <Link href="/contact">
+                        اطلاعات بیشتر
+                        <IconArrowRight
+                          size={12}
+                          className="rtl:rotate-180 group-hover/button:-translate-x-0.5 transition-transform"
+                        />
+                      </Link>
+                    </Button>
                   </div>
-                </div>
+                </CardContent>
 
                 {/* Hover glow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-500/0 to-primary-500/0 group-hover:from-primary-500/[0.02] group-hover:to-primary-500/[0.04] transition-all duration-300 pointer-events-none rounded-2xl" />
-              </div>
+              </Card>
             );
           })}
         </div>

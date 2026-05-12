@@ -1,186 +1,202 @@
-import {
-  IconFlask,
-  IconPresentation,
-  IconDeviceAnalytics,
-  IconStars,
-  IconWorldSearch,
-  IconMicroscope,
-  IconArrowLeft,
-  IconExternalLink,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconArrowRight, IconExternalLink } from "@tabler/icons-react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { copy, getLocaleDirection, localizePath, type Locale } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 const subsidiaries = [
   {
-    icon: IconFlask,
     name: "پرسیا ساینس",
     nameEn: "Persia Science",
-    tagline: "تحقیق و توسعه تجهیزات پزشکی",
+    monogram: "PS",
+    tagline: {
+      fa: "تحقیق و توسعه تجهیزات پزشکی",
+      en: "Medical equipment R&D",
+      ar: "البحث والتطوير للأجهزة الطبية",
+    },
     description:
-      "واردات و توزیع تجهیزات پیشرفته پزشکی از برندهای معتبر اروپایی و آمریکایی.",
-    color: "from-blue-500 to-blue-600",
-    bgLight: "bg-blue-50",
+      {
+        fa: "واردات و توزیع تجهیزات پیشرفته پزشکی از برندهای معتبر اروپایی و آمریکایی.",
+        en: "Import and distribution of advanced medical equipment from trusted European and American brands.",
+        ar: "استيراد وتوزيع الأجهزة الطبية المتقدمة من علامات أوروبية وأمريكية موثوقة.",
+      },
+    pattern: "from-blue-50 via-white to-cyan-50",
+    darkPattern: "dark:from-blue-950/55 dark:via-neutral-950 dark:to-cyan-950/40",
+    logoGradient: "from-blue-500 to-cyan-500",
     textColor: "text-blue-600",
+    darkTextColor: "dark:text-blue-300",
     borderColor: "border-blue-100",
     badgeColor: "bg-blue-100 text-blue-600",
+    darkBadgeColor: "dark:bg-blue-400/10 dark:text-blue-200 dark:ring-1 dark:ring-blue-300/15",
   },
   {
-    icon: IconPresentation,
     name: "مدیا مد",
     nameEn: "Media Med",
-    tagline: "بازاریابی و ارتباطات پزشکی",
+    monogram: "MM",
+    tagline: {
+      fa: "بازاریابی و ارتباطات پزشکی",
+      en: "Medical marketing and communications",
+      ar: "التسويق والاتصال الطبي",
+    },
     description:
-      "خدمات بازاریابی تخصصی، تولید محتوای علمی و استراتژی ارتباطات برای شرکت‌های پزشکی.",
-    color: "from-rose-500 to-rose-600",
-    bgLight: "bg-rose-50",
+      {
+        fa: "خدمات بازاریابی تخصصی، تولید محتوای علمی و استراتژی ارتباطات برای شرکت‌های پزشکی.",
+        en: "Specialized marketing, scientific content production, and communication strategy for medical companies.",
+        ar: "خدمات تسويق متخصصة وإنتاج محتوى علمي واستراتيجية اتصال للشركات الطبية.",
+      },
+    pattern: "from-rose-50 via-white to-pink-50",
+    darkPattern: "dark:from-rose-950/55 dark:via-neutral-950 dark:to-pink-950/40",
+    logoGradient: "from-rose-500 to-pink-500",
     textColor: "text-rose-600",
+    darkTextColor: "dark:text-rose-300",
     borderColor: "border-rose-100",
     badgeColor: "bg-rose-100 text-rose-600",
+    darkBadgeColor: "dark:bg-rose-400/10 dark:text-rose-200 dark:ring-1 dark:ring-rose-300/15",
   },
   {
-    icon: IconDeviceAnalytics,
     name: "پرسیا ادوانس",
     nameEn: "Persia Advance",
-    tagline: "تکنولوژی و دیجیتال هلث",
+    monogram: "PA",
+    tagline: {
+      fa: "تکنولوژی و دیجیتال هلث",
+      en: "Technology and digital health",
+      ar: "التقنية والصحة الرقمية",
+    },
     description:
-      "توسعه راهکارهای دیجیتال بهداشت و پیاده‌سازی سیستم‌های هوشمند در مراکز درمانی.",
-    color: "from-violet-500 to-violet-600",
-    bgLight: "bg-violet-50",
+      {
+        fa: "توسعه راهکارهای دیجیتال بهداشت و پیاده‌سازی سیستم‌های هوشمند در مراکز درمانی.",
+        en: "Development of digital health solutions and implementation of intelligent systems in care centers.",
+        ar: "تطوير حلول الصحة الرقمية وتنفيذ الأنظمة الذكية في المراكز العلاجية.",
+      },
+    pattern: "from-violet-50 via-white to-fuchsia-50",
+    darkPattern: "dark:from-violet-950/55 dark:via-neutral-950 dark:to-fuchsia-950/40",
+    logoGradient: "from-violet-500 to-fuchsia-500",
     textColor: "text-violet-600",
+    darkTextColor: "dark:text-violet-300",
     borderColor: "border-violet-100",
     badgeColor: "bg-violet-100 text-violet-600",
+    darkBadgeColor: "dark:bg-violet-400/10 dark:text-violet-200 dark:ring-1 dark:ring-violet-300/15",
   },
-  {
-    icon: IconStars,
-    name: "کنگره پلاس",
-    nameEn: "Congress Plus",
-    tagline: "برگزاری رویدادهای تخصصی",
-    description:
-      "سازماندهی و اجرای کنگره‌های بین‌المللی، سمپوزیوم‌ها و نمایشگاه‌های تجهیزات پزشکی.",
-    color: "from-amber-500 to-amber-600",
-    bgLight: "bg-amber-50",
-    textColor: "text-amber-600",
-    borderColor: "border-amber-100",
-    badgeColor: "bg-amber-100 text-amber-600",
-  },
-  {
-    icon: IconWorldSearch,
-    name: "ایران لاپاروسکوپی",
-    nameEn: "Iran Laparoscopy",
-    tagline: "تخصصی در جراحی لاپاروسکوپی",
-    description:
-      "آموزش، پژوهش و توسعه خدمات در حوزه جراحی لاپاروسکوپی، باریاتریک و هرنیا.",
-    color: "from-emerald-500 to-emerald-600",
-    bgLight: "bg-emerald-50",
-    textColor: "text-emerald-600",
-    borderColor: "border-emerald-100",
-    badgeColor: "bg-emerald-100 text-emerald-600",
-  },
-  {
-    icon: IconMicroscope,
-    name: "ربوساینس",
-    nameEn: "RoboScience",
-    tagline: "جراحی رباتیک و تکنولوژی",
-    description:
-      "مرجع تخصصی جراحی رباتیک در ایران: آموزش، پژوهش و مشاوره فناوری‌های نوین جراحی.",
-    color: "from-cyan-500 to-cyan-600",
-    bgLight: "bg-cyan-50",
-    textColor: "text-cyan-600",
-    borderColor: "border-cyan-100",
-    badgeColor: "bg-cyan-100 text-cyan-600",
-  },
+
 ];
 
-export default function Subsidiaries() {
+type SubsidiariesProps = {
+  locale?: Locale;
+};
+
+export default function Subsidiaries({ locale = "fa" }: SubsidiariesProps) {
+  const t = copy[locale].subsidiaries;
+  const dir = getLocaleDirection(locale);
+
   return (
-    <section id="subsidiaries" className="py-24 bg-neutral-50">
+    <section
+      id="subsidiaries"
+      dir={dir}
+      className={cn(
+        "py-24 bg-neutral-50 dark:bg-neutral-950",
+        locale === "en" && "text-right"
+      )}
+    >
       <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
         {/* Section header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
-          <div className="max-w-xl">
+          <div className="">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-50 border border-primary-100 rounded-full text-primary-600 text-xs font-semibold mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500" />
-              زیرمجموعه‌های هلدینگ
+              {t.eyebrow}
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 leading-tight mb-4">
-              اکوسیستم یکپارچه{" "}
-              <span className="gradient-text">خدمات پزشکی</span>
+              {t.titlePrefix}{" "}
+              <span className="gradient-text">{t.titleHighlight}</span>
             </h2>
             <p className="text-base text-neutral-500 leading-7">
-              شش زیرمجموعه تخصصی که با هم یک چرخه کامل از تحقیق تا توزیع و
-              آموزش در صنعت پزشکی را پوشش می‌دهند.
+              {t.description}
             </p>
           </div>
-          <a
-            href="#contact"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors shrink-0"
+          <Button
+            asChild
+            variant="ghost"
+            className="shrink-0 text-sm font-semibold text-primary-600 hover:text-primary-800"
           >
-            مشاهده همه
-            <IconArrowLeft
-              size={16}
-              className="rtl:rotate-180 group-hover:-translate-x-0.5 transition-transform"
-            />
-          </a>
+            <Link href={localizePath("/contact", locale)}>
+              {t.all}
+              <IconArrowLeft
+                size={16}
+                className="rtl:rotate-180 group-hover/button:-translate-x-0.5 transition-transform"
+              />
+            </Link>
+          </Button>
         </div>
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subsidiaries.map((sub) => {
-            const Icon = sub.icon;
-            return (
-              <div
+          {subsidiaries.map((sub) => (
+              <Card
                 key={sub.name}
-                className={`card-hover group bg-white rounded-2xl border ${sub.borderColor} p-7 flex flex-col`}
+                className={`card-hover group flex overflow-hidden rounded-2xl bg-white p-0 ${sub.borderColor} dark:border-white/10 dark:bg-neutral-900/80 dark:shadow-[0_22px_55px_rgb(0,0,0,0.32)]`}
               >
-                {/* Icon + badge */}
-                <div className="flex items-start justify-between mb-5">
-                  <div
-                    className={`w-12 h-12 rounded-xl ${sub.bgLight} flex items-center justify-center`}
-                  >
-                    <Icon size={24} className={sub.textColor} />
+                <CardContent className="flex h-full flex-col p-0">
+                  <div className={`relative overflow-hidden bg-gradient-to-br ${sub.pattern} ${sub.darkPattern} p-6`}>
+                    <div className="absolute left-5 top-5 h-16 w-16 rounded-full border border-white/80 bg-white/40 blur-sm dark:border-white/10 dark:bg-white/5" />
+                    <div className="absolute -right-12 -top-12 hidden h-32 w-32 rounded-full bg-white/45 blur-2xl dark:block dark:bg-white/5" />
+                    <div className="relative flex items-start justify-between gap-4">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${sub.logoGradient} text-lg font-black tracking-wide text-white shadow-lg shadow-black/10 ring-1 ring-white/35 dark:shadow-black/35 dark:ring-white/15`}
+                        >
+                          {sub.monogram}
+                        </div>
+                        <div>
+                          <CardTitle className="text-xl font-black text-neutral-900 transition-colors group-hover:text-primary-600">
+                            {sub.name}
+                          </CardTitle>
+                          <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-neutral-400">
+                            {sub.nameEn}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <span
-                    className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${sub.badgeColor} tracking-wide`}
-                  >
-                    {sub.tagline}
-                  </span>
-                </div>
 
-                {/* Name */}
-                <div className="mb-1">
-                  <h3 className="text-lg font-bold text-neutral-900 group-hover:text-primary-600 transition-colors">
-                    {sub.name}
-                  </h3>
-                  <p className="text-xs text-neutral-400 font-medium tracking-wide">
-                    {sub.nameEn}
+                  <div className="flex flex-1 flex-col p-7 pt-6 dark:bg-gradient-to-b dark:from-white/[0.03] dark:to-transparent">
+                  <Badge
+                    variant="secondary"
+                    className={`mb-5 h-7 w-fit rounded-full px-3 text-[10px] font-semibold tracking-wide ${sub.badgeColor} ${sub.darkBadgeColor}`}
+                  >
+                    {sub.tagline[locale]}
+                  </Badge>
+
+                  <p className="flex-grow text-sm leading-7 text-neutral-500">
+                    {sub.description[locale]}
                   </p>
-                </div>
 
-                {/* Description */}
-                <p className="text-sm text-neutral-500 leading-7 mt-3 flex-grow">
-                  {sub.description}
-                </p>
-
-                {/* Link */}
-                <div className="mt-6 pt-5 border-t border-neutral-100 flex items-center justify-between">
-                  <a
-                    href="#"
-                    className={`inline-flex items-center gap-1.5 text-xs font-semibold ${sub.textColor} hover:opacity-80 transition-opacity`}
-                  >
-                    بازدید از سایت
-                    <IconExternalLink size={12} />
-                  </a>
-                  <div
-                    className={`w-7 h-7 rounded-lg ${sub.bgLight} flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity`}
-                  >
-                    <IconArrowLeft
-                      size={12}
-                      className={`${sub.textColor} rtl:rotate-180`}
-                    />
+                  <div className="mt-6 flex items-center justify-between border-t border-neutral-100 pt-5">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="sm"
+                      className={`h-8 px-0 text-xs font-semibold ${sub.textColor} ${sub.darkTextColor} hover:bg-transparent hover:opacity-80`}
+                    >
+                      <Link href={localizePath("/contact", locale)}>
+                        {t.viewBrand}
+                        <IconExternalLink size={12} />
+                      </Link>
+                    </Button>
+                    <div
+                      className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${sub.pattern} ${sub.darkPattern} opacity-0 ring-1 ring-transparent transition-opacity group-hover:opacity-100 dark:ring-white/10`}
+                    >
+                      <IconArrowRight
+                        size={13}
+                        className={`${sub.textColor} ${sub.darkTextColor} rtl:rotate-180`}
+                      />
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                  </div>
+                </CardContent>
+              </Card>
+          ))}
         </div>
       </div>
     </section>

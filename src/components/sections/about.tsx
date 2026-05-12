@@ -26,12 +26,12 @@ const values = [
 ];
 
 const milestones = [
-  { year: "۱۳۸۹", label: "تأسیس هلدینگ پرسیا مهر" },
-  { year: "۱۳۹۲", label: "اولین کنگره بین‌المللی لاپاروسکوپی" },
+  { year: "۱۳۸۹", label: "تأسیس هلدینگ پرشیامهر" },
+  { year: "۱۳۹۲", label: "آغاز همکاری با شبکه تخصصی لاپاروسکوپی" },
   { year: "۱۳۹۶", label: "راه‌اندازی مرکز شبیه‌سازی جراحی" },
   { year: "۱۳۹۹", label: "گسترش به ۱۰ کشور" },
   { year: "۱۴۰۱", label: "تأسیس بخش جراحی رباتیک" },
-  { year: "۱۴۰۳", label: "اجرای ۲۰۰‌امین رویداد" },
+  { year: "۱۴۰۳", label: "اجرای ۲۰۰‌امین پروژه مشاوره" },
 ];
 
 export default function About() {
@@ -42,7 +42,7 @@ export default function About() {
         <div className="text-center max-w-2xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-50 border border-primary-100 rounded-full text-primary-600 text-xs font-semibold mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-primary-500" />
-            درباره پرسیا مهر
+            درباره پرشیامهر
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 leading-tight mb-5">
             پیشرو در{" "}
@@ -50,7 +50,7 @@ export default function About() {
             پزشکی ایران
           </h2>
           <p className="text-base text-neutral-500 leading-8">
-            از سال ۱۳۸۹، پرسیا مهر با تیمی از متخصصان صنعت پزشکی و مشاوران
+            از سال ۱۳۸۹، پرشیامهر با تیمی از متخصصان صنعت پزشکی و مشاوران
             ارشد، در حال شکل‌دادن آینده صنعت تجهیزات پزشکی ایران است.
           </p>
         </div>
@@ -128,7 +128,7 @@ export default function About() {
           {/* Right: Timeline */}
           <div>
             <h3 className="text-lg font-bold text-neutral-900 mb-8">
-              مسیر رشد پرسیا مهر
+              مسیر رشد پرشیامهر
             </h3>
             <div className="relative">
               {/* Timeline line */}

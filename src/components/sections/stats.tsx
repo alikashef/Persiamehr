@@ -18,8 +18,8 @@ const stats = [
   {
     icon: IconTrophy,
     value: "۲۰۰+",
-    label: "رویداد برگزار شده",
-    sublabel: "کنگره، سمینار، کارگاه",
+    label: "پروژه مشاوره",
+    sublabel: "استراتژی، ساختار، بازار",
     color: "from-amber-500 to-orange-500",
   },
   {
@@ -46,8 +46,8 @@ const stats = [
   {
     icon: IconUsersGroup,
     value: "۳۰,۰۰۰+",
-    label: "شرکت‌کننده",
-    sublabel: "در رویدادهای علمی",
+    label: "ذی‌نفع تحت پوشش",
+    sublabel: "در شبکه تخصصی پزشکی",
     color: "from-primary-500 to-purple-600",
   },
 ];
@@ -85,7 +85,7 @@ export default function Stats() {
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-primary-300 text-xs font-semibold mb-5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary-400" />
-            پرسیا مهر در اعداد
+            پرشیامهر در اعداد
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
             ۱۵ سال حضور موثر در{" "}
