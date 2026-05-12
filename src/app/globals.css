@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+@theme inline {
+  /* Primary brand color system */
+  --color-primary:     #943993;
+  --color-primary-50:  #fdf4fd;
+  --color-primary-100: #f5e6f5;
+  --color-primary-200: #ead0ea;
+  --color-primary-300: #d9aad9;
+  --color-primary-400: #c07bbf;
+  --color-primary-500: #943993;
+  --color-primary-600: #7a2e79;
+  --color-primary-700: #612661;
+  --color-primary-800: #4d1e4d;
+  --color-primary-900: #3a163a;
+
+  /* Neutral palette */
+  --color-neutral-50:  #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+
+  /* Medical white surface */
+  --color-medical-white: #f8fafc;
+  --color-medical-surface: #f1f5f9;
+
+  /* Font */
+  --font-sans: 'Vazirmatn', 'Tahoma', 'Arial', sans-serif;
+  --font-mono: 'Courier New', monospace;
+
+  /* Custom spacing */
+  --spacing-section: 5rem;
+  --spacing-section-sm: 3rem;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-card-hover: 0 10px 25px -5px rgb(148 57 147 / 0.10), 0 4px 10px -5px rgb(148 57 147 / 0.06);
+  --shadow-elevated: 0 20px 40px -10px rgb(0 0 0 / 0.10);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  direction: rtl;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #ffffff;
+  color: #1f2937;
+  font-family: 'Vazirmatn', 'Tahoma', 'Arial', sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth transitions for interactive elements */
+a, button {
+  transition: all 0.2s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #943993;
+  border-radius: 3px;
+}
+
+/* Selection color */
+::selection {
+  background: #ead0ea;
+  color: #3a163a;
+}
+
+/* Hero background grid */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgb(148 57 147 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(148 57 147 / 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #943993 0%, #c07bbf 50%, #7a2e79 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Orb animation */
+@keyframes float-orb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(20px, -20px) scale(1.05); }
+  66%       { transform: translate(-15px, 15px) scale(0.97); }
+}
+
+.orb-animate {
+  animation: float-orb 12s ease-in-out infinite;
+}
+
+.orb-animate-delayed {
+  animation: float-orb 15s ease-in-out infinite reverse;
+  animation-delay: -5s;
+}
+
+/* Card hover */
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgb(148 57 147 / 0.12);
+}
+
+/* Stat counter animation */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.stat-animate {
+  animation: count-up 0.6s ease forwards;
+}
+
+/* Section fade-in */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fade-in-up 0.7s ease forwards;
+}
+
+/* Pulse ring on icon */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.icon-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgb(148 57 147 / 0.25);
+  animation: pulse-ring 2s ease-out infinite;
+}
