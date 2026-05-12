@@ -1,0 +1,18 @@
+[
+  {
+    "model": "settings_app.sitesettings",
+    "pk": 1,
+    "fields": {
+      "address": "تهران، خیابان ولیعصر، پلاک ۱۲۳",
+      "phone": "۰۲۱-۸۸۰۰۱۲۳۴",
+      "email": "info@persiamehr.com",
+      "footer_about": "پرشیامهر هلدینگ تخصصی در حوزه تجهیزات پزشکی، آموزش بالینی و مشاوره توسعه بازار.",
+      "instagram": "https://instagram.com/persiamehr",
+      "telegram": "https://t.me/persiamehr",
+      "linkedin": "https://linkedin.com/company/persiamehr",
+      "twitter": "",
+      "youtube": "",
+      "whatsapp": "+989120000000"
+    }
+  }
+]

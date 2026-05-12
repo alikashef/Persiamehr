@@ -25,6 +25,31 @@ export type SiteSettings = {
   whatsapp: string;
 };
 
+export type ServiceSection = { title: string; body: string };
+
+export type ApiService = {
+  slug: string;
+  icon_name: string;
+  title: string;
+  summary: string;
+  description: string;
+  tags: string[];
+  sections: ServiceSection[];
+  highlight: boolean;
+  order: number;
+};
+
+export type ApiSubsidiary = {
+  slug: string;
+  monogram: string;
+  theme: "blue" | "rose" | "violet" | "green";
+  name: string;
+  tagline: string;
+  description: string;
+  website: string;
+  order: number;
+};
+
 export type ContactPayload = {
   full_name: string;
   email: string;
@@ -54,7 +79,16 @@ export type ProductRequestPayload = {
 
 export const apiClient = {
   getSettings: () =>
-    apiFetch<SiteSettings>("/settings/", { next: { revalidate: 3600 } }),
+    apiFetch<SiteSettings>("/settings/", { next: { revalidate: 3600 } } as RequestInit),
+
+  getServices: (lang = "fa") =>
+    apiFetch<ApiService[]>(`/services/?lang=${lang}`, { next: { revalidate: 3600 } } as RequestInit),
+
+  getService: (slug: string, lang = "fa") =>
+    apiFetch<ApiService>(`/services/${slug}/?lang=${lang}`, { next: { revalidate: 3600 } } as RequestInit),
+
+  getSubsidiaries: (lang = "fa") =>
+    apiFetch<ApiSubsidiary[]>(`/subsidiaries/?lang=${lang}`, { next: { revalidate: 3600 } } as RequestInit),
 
   sendContact: (data: ContactPayload) =>
     apiFetch<{ id: number }>("/contact/", {
