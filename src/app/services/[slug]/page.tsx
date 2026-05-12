@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { IconArrowLeft, IconCheck } from "@tabler/icons-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { getServiceBySlug, services } from "@/lib/services";
+import { apiClient } from "@/lib/api";
+import { getIcon } from "@/lib/icon-map";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,19 +13,13 @@ type ServicePageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: ServicePageProps) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const service = await apiClient.getService(slug, "fa").catch(() => null);
 
-  if (!service) {
-    return {
-      title: "خدمت پیدا نشد | پرشیامهر",
-    };
-  }
+  if (!service) return { title: "خدمت پیدا نشد | پرشیامهر" };
 
   return {
     title: `${service.title} | پرشیامهر`,
@@ -34,13 +29,14 @@ export async function generateMetadata({ params }: ServicePageProps) {
 
 export default async function ServiceDetailPage({ params }: ServicePageProps) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const [service, allServices] = await Promise.all([
+    apiClient.getService(slug, "fa").catch(() => null),
+    apiClient.getServices("fa").catch(() => []),
+  ]);
 
-  if (!service) {
-    notFound();
-  }
+  if (!service) notFound();
 
-  const Icon = service.icon;
+  const Icon = getIcon(service.icon_name);
 
   return (
     <main className="min-h-screen bg-neutral-50">
@@ -100,18 +96,13 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           <div className="space-y-8">
             <Card className="rounded-2xl border-neutral-100 bg-white p-0">
               <CardContent className="p-7">
-                <p className="text-base leading-9 text-neutral-600">
-                  {service.description}
-                </p>
+                <p className="text-base leading-9 text-neutral-600">{service.description}</p>
               </CardContent>
             </Card>
 
             <div className="grid gap-5">
               {service.sections.map((section) => (
-                <Card
-                  key={section.title}
-                  className="rounded-2xl border-neutral-100 bg-white p-0"
-                >
+                <Card key={section.title} className="rounded-2xl border-neutral-100 bg-white p-0">
                   <CardHeader className="p-7 pb-0">
                     <CardTitle className="flex items-center gap-2 text-xl font-bold text-neutral-900">
                       <IconCheck size={20} className="text-primary-500" />
@@ -119,9 +110,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-7 pt-4">
-                    <p className="text-sm leading-8 text-neutral-600">
-                      {section.body}
-                    </p>
+                    <p className="text-sm leading-8 text-neutral-600">{section.body}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -131,12 +120,10 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           <aside className="space-y-5">
             <Card className="rounded-2xl border-neutral-100 bg-white p-0">
               <CardHeader className="p-6 pb-0">
-                <CardTitle className="text-sm font-bold text-neutral-900">
-                  سایر خدمات
-                </CardTitle>
+                <CardTitle className="text-sm font-bold text-neutral-900">سایر خدمات</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 p-6 pt-4">
-                {services.map((item) => (
+                {allServices.map((item) => (
                   <Button
                     key={item.slug}
                     asChild

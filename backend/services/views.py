@@ -1,8 +1,11 @@
 from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 from drf_spectacular.utils import extend_schema_view, extend_schema
+
 from .models import Service
-from .serializers import ServiceSerializer
+from .serializers import ServiceLocaleSerializer, ServiceAdminSerializer
+
+WRITE_ACTIONS = ['create', 'update', 'partial_update', 'destroy']
 
 
 @extend_schema_view(
@@ -14,13 +17,20 @@ from .serializers import ServiceSerializer
     destroy=extend_schema(summary='حذف خدمت'),
 )
 class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.filter(is_active=True)
-    serializer_class = ServiceSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['title', 'description']
+    search_fields = ['title', 'title_en', 'description', 'description_en']
     ordering_fields = ['order', 'created_at']
     lookup_field = 'slug'
+
+    def get_serializer_class(self):
+        if self.action in WRITE_ACTIONS and self.request.user.is_staff:
+            return ServiceAdminSerializer
+        return ServiceLocaleSerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['lang'] = self.request.query_params.get('lang', 'fa')
+        return context
 
     def get_queryset(self):
         if self.request.user.is_staff:
@@ -28,6 +38,6 @@ class ServiceViewSet(viewsets.ModelViewSet):
         return Service.objects.filter(is_active=True)
 
     def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+        if self.action in WRITE_ACTIONS:
             return [IsAdminUser()]
-        return super().get_permissions()
+        return [IsAuthenticatedOrReadOnly()]

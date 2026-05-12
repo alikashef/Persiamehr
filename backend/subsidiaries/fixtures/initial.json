@@ -1,0 +1,74 @@
+[
+  {
+    "model": "subsidiaries.subsidiary",
+    "pk": 1,
+    "fields": {
+      "slug": "persia-science",
+      "monogram": "PS",
+      "theme": "blue",
+      "name": "پرسیا ساینس",
+      "tagline": "تحقیق و توسعه تجهیزات پزشکی",
+      "description": "واردات و توزیع تجهیزات پیشرفته پزشکی از برندهای معتبر اروپایی و آمریکایی.",
+      "name_en": "Persia Science",
+      "tagline_en": "Medical equipment R&D",
+      "description_en": "Import and distribution of advanced medical equipment from trusted European and American brands.",
+      "name_ar": "پرسیا ساینس",
+      "tagline_ar": "البحث والتطوير للأجهزة الطبية",
+      "description_ar": "استيراد وتوزيع الأجهزة الطبية المتقدمة من علامات أوروبية وأمريكية موثوقة.",
+      "website": "",
+      "logo": null,
+      "is_active": true,
+      "order": 0,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "subsidiaries.subsidiary",
+    "pk": 2,
+    "fields": {
+      "slug": "media-med",
+      "monogram": "MM",
+      "theme": "rose",
+      "name": "مدیا مد",
+      "tagline": "بازاریابی و ارتباطات پزشکی",
+      "description": "خدمات بازاریابی تخصصی، تولید محتوای علمی و استراتژی ارتباطات برای شرکت‌های پزشکی.",
+      "name_en": "Media Med",
+      "tagline_en": "Medical marketing and communications",
+      "description_en": "Specialized marketing, scientific content production, and communication strategy for medical companies.",
+      "name_ar": "مديا مد",
+      "tagline_ar": "التسويق والاتصال الطبي",
+      "description_ar": "خدمات تسويق متخصصة وإنتاج محتوى علمي واستراتيجية اتصال للشركات الطبية.",
+      "website": "",
+      "logo": null,
+      "is_active": true,
+      "order": 1,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "subsidiaries.subsidiary",
+    "pk": 3,
+    "fields": {
+      "slug": "persia-advance",
+      "monogram": "PA",
+      "theme": "violet",
+      "name": "پرسیا ادوانس",
+      "tagline": "تکنولوژی و دیجیتال هلث",
+      "description": "توسعه راهکارهای دیجیتال بهداشت و پیاده‌سازی سیستم‌های هوشمند در مراکز درمانی.",
+      "name_en": "Persia Advance",
+      "tagline_en": "Technology and digital health",
+      "description_en": "Development of digital health solutions and implementation of intelligent systems in care centers.",
+      "name_ar": "پرسیا أدفانس",
+      "tagline_ar": "التقنية والصحة الرقمية",
+      "description_ar": "تطوير حلول الصحة الرقمية وتنفيذ الأنظمة الذكية في المراكز العلاجية.",
+      "website": "",
+      "logo": null,
+      "is_active": true,
+      "order": 2,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  }
+]

@@ -11,10 +11,10 @@ export async function submitContact(
   _prev: ContactFormState,
   formData: FormData
 ): Promise<ContactFormState> {
-  const full_name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const company = formData.get("company") as string;
-  const message = formData.get("message") as string;
+  const full_name = (formData.get("name") as string | null)?.trim() ?? "";
+  const email = (formData.get("email") as string | null)?.trim() ?? "";
+  const company = (formData.get("company") as string | null)?.trim() ?? "";
+  const message = (formData.get("message") as string | null)?.trim() ?? "";
 
   if (!full_name || !email || !message) {
     return { success: false, error: "لطفاً تمام فیلدهای ضروری را پر کنید." };
@@ -28,7 +28,11 @@ export async function submitContact(
       message,
     });
     return { success: true };
-  } catch {
-    return { success: false, error: "خطا در ارسال پیام. لطفاً دوباره تلاش کنید." };
+  } catch (err) {
+    console.error("Contact form error:", err);
+    return {
+      success: false,
+      error: "خطا در ارسال پیام. لطفاً از اتصال سرور مطمئن شوید و دوباره تلاش کنید.",
+    };
   }
 }
