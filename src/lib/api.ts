@@ -14,9 +14,11 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
 
 export type SiteSettings = {
   address: string;
+  address_i18n: Record<string, string>;
   phone: string;
   email: string;
   footer_about: string;
+  footer_about_i18n: Record<string, string>;
   instagram: string;
   telegram: string;
   linkedin: string;
@@ -25,28 +27,36 @@ export type SiteSettings = {
   whatsapp: string;
 };
 
-export type ServiceSection = { title: string; body: string };
-
 export type ApiService = {
-  slug: string;
-  icon_name: string;
+  id: number;
   title: string;
+  slug: string;
   summary: string;
   description: string;
-  tags: string[];
-  sections: ServiceSection[];
+  title_i18n: Record<string, string>;
+  summary_i18n: Record<string, string>;
+  description_i18n: Record<string, string>;
+  tags: Record<string, string[]> | string[];
+  sections: Record<string, Array<{ title: string; body: string }>> | Array<{ title: string; body: string }>;
+  icon_key: string;
   highlight: boolean;
+  is_active: boolean;
   order: number;
 };
 
 export type ApiSubsidiary = {
-  slug: string;
-  monogram: string;
-  theme: "blue" | "rose" | "violet" | "green";
+  id: number;
   name: string;
-  tagline: string;
+  slug: string;
+  name_en: string;
+  name_i18n: Record<string, string>;
+  monogram: string;
+  tagline: Record<string, string>;
   description: string;
+  description_i18n: Record<string, string>;
   website: string;
+  style: Record<string, string>;
+  is_active: boolean;
   order: number;
 };
 
@@ -78,17 +88,17 @@ export type ProductRequestPayload = {
 };
 
 export const apiClient = {
-  getSettings: () =>
-    apiFetch<SiteSettings>("/settings/", { next: { revalidate: 3600 } } as RequestInit),
+  getServices: () => apiFetch<ApiService[]>("/services/", { cache: "no-store" }),
 
-  getServices: (lang = "fa") =>
-    apiFetch<ApiService[]>(`/services/?lang=${lang}`, { next: { revalidate: 3600 } } as RequestInit),
+  getService: (slug: string) =>
+    apiFetch<ApiService>(`/services/${slug}/`, { cache: "no-store" }),
 
-  getService: (slug: string, lang = "fa") =>
-    apiFetch<ApiService>(`/services/${slug}/?lang=${lang}`, { next: { revalidate: 3600 } } as RequestInit),
+  getSubsidiaries: () =>
+    apiFetch<ApiSubsidiary[]>("/subsidiaries/", {
+      cache: "no-store",
+    }),
 
-  getSubsidiaries: (lang = "fa") =>
-    apiFetch<ApiSubsidiary[]>(`/subsidiaries/?lang=${lang}`, { next: { revalidate: 3600 } } as RequestInit),
+  getSettings: () => apiFetch<SiteSettings>("/settings/", { cache: "no-store" }),
 
   sendContact: (data: ContactPayload) =>
     apiFetch<{ id: number }>("/contact/", {

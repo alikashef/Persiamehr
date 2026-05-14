@@ -42,6 +42,34 @@ const iranYekan = localFont({
   fallback: ["Tahoma", "Arial", "sans-serif"],
 });
 
+const inter = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Inter-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Inter-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Inter-SemiBold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Inter-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-inter",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
+});
+
 export const metadata: Metadata = {
   title: "پرشیامهر | هلدینگ تخصصی تجهیزات پزشکی",
   description:
@@ -58,7 +86,7 @@ export default function RootLayout({
       lang="fa"
       dir="rtl"
       suppressHydrationWarning
-      className={cn("h-full font-sans", iranYekan.variable)}
+      className={cn("h-full font-sans", iranYekan.variable, inter.variable)}
     >
       <body className="min-h-full antialiased">
         {children}

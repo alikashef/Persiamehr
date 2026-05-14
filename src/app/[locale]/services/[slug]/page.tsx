@@ -6,52 +6,106 @@ import Navbar from "@/components/navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getLocaleDirection, isLocale, localizePath, type Locale } from "@/lib/i18n";
 import { apiClient } from "@/lib/api";
-import { getIcon } from "@/lib/icon-map";
+import { getLocaleDirection, isLocale, localizePath, type Locale } from "@/lib/i18n";
+import {
+  getServiceBySlug,
+  getServices,
+  mapApiService,
+  mapApiServices,
+} from "@/lib/services";
 import { cn } from "@/lib/utils";
 
 type LocalizedServicePageProps = {
   params: Promise<{ locale: string; slug: string }>;
 };
 
-export const dynamic = "force-dynamic";
-
 const servicePageCopy = {
-  en: { back: "Back to services", cta: "Request consultation", other: "Other services" },
-  ar: { back: "العودة إلى الخدمات", cta: "طلب استشارة", other: "خدمات أخرى" },
+  en: {
+    back: "Back to services",
+    cta: "Request consultation",
+    other: "Other services",
+    notFound: "Service not found | Persiamehr",
+  },
+  ar: {
+    back: "العودة إلى الخدمات",
+    cta: "طلب استشارة",
+    other: "خدمات أخرى",
+    notFound: "الخدمة غير موجودة | پرشیامهر",
+  },
 } as const;
+
+export function generateStaticParams() {
+  return (["en", "ar"] as const).flatMap((locale) =>
+    getServices(locale).map((service) => ({ locale, slug: service.slug }))
+  );
+}
+
+async function getDisplayService(slug: string, locale: Exclude<Locale, "fa">) {
+  try {
+    return mapApiService(await apiClient.getService(slug), locale);
+  } catch {
+    return getServiceBySlug(slug, locale);
+  }
+}
+
+async function getDisplayServices(locale: Exclude<Locale, "fa">) {
+  try {
+    return mapApiServices(await apiClient.getServices(), locale);
+  } catch {
+    return getServices(locale);
+  }
+}
 
 export async function generateMetadata({ params }: LocalizedServicePageProps) {
   const { locale, slug } = await params;
-  if (!isLocale(locale) || locale === "fa") return {};
-  const service = await apiClient.getService(slug, locale).catch(() => null);
-  if (!service) return { title: `Service not found | Persiamehr` };
-  return { title: `${service.title} | Persiamehr`, description: service.summary };
+
+  if (!isLocale(locale) || locale === "fa") {
+    return {};
+  }
+
+  const service = await getDisplayService(slug, locale);
+
+  if (!service) {
+    return {
+      title: servicePageCopy[locale].notFound,
+    };
+  }
+
+  return {
+    title: `${service.title} | Persiamehr`,
+    description: service.summary,
+  };
 }
 
-export default async function LocalizedServiceDetailPage({ params }: LocalizedServicePageProps) {
+export default async function LocalizedServiceDetailPage({
+  params,
+}: LocalizedServicePageProps) {
   const { locale, slug } = await params;
 
-  if (!isLocale(locale) || locale === "fa") notFound();
+  if (!isLocale(locale) || locale === "fa") {
+    notFound();
+  }
 
   const currentLocale = locale as Exclude<Locale, "fa">;
+  const service = await getDisplayService(slug, currentLocale);
+
+  if (!service) {
+    notFound();
+  }
+
+  const serviceLinks = await getDisplayServices(currentLocale);
+  const Icon = service.icon;
   const dir = getLocaleDirection(currentLocale);
   const t = servicePageCopy[currentLocale];
-
-  const [service, allServices] = await Promise.all([
-    apiClient.getService(slug, currentLocale).catch(() => null),
-    apiClient.getServices(currentLocale).catch(() => []),
-  ]);
-
-  if (!service) notFound();
-
-  const Icon = getIcon(service.icon_name);
 
   return (
     <main
       dir={dir}
-      className={cn("min-h-screen bg-neutral-50 dark:bg-neutral-950", currentLocale === "en" && "text-right")}
+      className={cn(
+        "min-h-screen bg-neutral-50 dark:bg-neutral-950",
+        currentLocale === "en" && "text-right"
+      )}
     >
       <Navbar />
 
@@ -82,12 +136,20 @@ export default async function LocalizedServiceDetailPage({ params }: LocalizedSe
               <CardContent className="p-6">
                 <div className="mb-5 flex flex-wrap gap-2">
                   {service.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="h-7 rounded-lg bg-white/10 px-3 text-xs font-semibold text-white">
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="h-7 rounded-lg bg-white/10 px-3 text-xs font-semibold text-white"
+                    >
                       {tag}
                     </Badge>
                   ))}
                 </div>
-                <Button asChild size="lg" className="h-12 w-full rounded-xl bg-primary-500 font-semibold text-white shadow-lg shadow-primary-500/20 hover:bg-primary-600">
+                <Button
+                  asChild
+                  size="lg"
+                  className="h-12 w-full rounded-xl bg-primary-500 font-semibold text-white shadow-lg shadow-primary-500/20 hover:bg-primary-600"
+                >
                   <Link href={localizePath("/contact", currentLocale)}>{t.cta}</Link>
                 </Button>
               </CardContent>
@@ -101,12 +163,18 @@ export default async function LocalizedServiceDetailPage({ params }: LocalizedSe
           <div className="space-y-8">
             <Card className="rounded-2xl border-neutral-100 bg-white p-0 dark:border-white/10 dark:bg-neutral-900/80">
               <CardContent className="p-7">
-                <p className="text-base leading-9 text-neutral-600">{service.description}</p>
+                <p className="text-base leading-9 text-neutral-600">
+                  {service.description}
+                </p>
               </CardContent>
             </Card>
+
             <div className="grid gap-5">
               {service.sections.map((section) => (
-                <Card key={section.title} className="rounded-2xl border-neutral-100 bg-white p-0 dark:border-white/10 dark:bg-neutral-900/80">
+                <Card
+                  key={section.title}
+                  className="rounded-2xl border-neutral-100 bg-white p-0 dark:border-white/10 dark:bg-neutral-900/80"
+                >
                   <CardHeader className="p-7 pb-0">
                     <CardTitle className="flex items-center gap-2 text-xl font-bold text-neutral-900">
                       <IconCheck size={20} className="text-primary-500" />
@@ -114,7 +182,9 @@ export default async function LocalizedServiceDetailPage({ params }: LocalizedSe
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-7 pt-4">
-                    <p className="text-sm leading-8 text-neutral-600">{section.body}</p>
+                    <p className="text-sm leading-8 text-neutral-600">
+                      {section.body}
+                    </p>
                   </CardContent>
                 </Card>
               ))}
@@ -124,17 +194,21 @@ export default async function LocalizedServiceDetailPage({ params }: LocalizedSe
           <aside className="space-y-5">
             <Card className="rounded-2xl border-neutral-100 bg-white p-0 dark:border-white/10 dark:bg-neutral-900/80">
               <CardHeader className="p-6 pb-0">
-                <CardTitle className="text-sm font-bold text-neutral-900">{t.other}</CardTitle>
+                <CardTitle className="text-sm font-bold text-neutral-900">
+                  {t.other}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 p-6 pt-4">
-                {allServices.map((item) => (
+                {serviceLinks.map((item) => (
                   <Button
                     key={item.slug}
                     asChild
                     variant={item.slug === service.slug ? "default" : "ghost"}
                     className="h-auto w-full justify-start rounded-xl px-4 py-3 text-right"
                   >
-                    <Link href={localizePath(`/services/${item.slug}`, currentLocale)}>{item.title}</Link>
+                    <Link href={localizePath(`/services/${item.slug}`, currentLocale)}>
+                      {item.title}
+                    </Link>
                   </Button>
                 ))}
               </CardContent>
