@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.templatetags.static import static
 from dotenv import load_dotenv
 import os
 
@@ -13,6 +14,7 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 INSTALLED_APPS = [
+    'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,6 +82,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR.parent / 'public',
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -101,4 +106,14 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API documentation for Persiamehr holding website',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+}
+
+UNFOLD = {
+    'SITE_TITLE': 'مدیریت پرشیامهر',
+    'SITE_HEADER': 'پرشیامهر',
+    'SITE_SUBHEADER': 'پنل مدیریت محتوا',
+    'SHOW_BACK_BUTTON': True,
+    'STYLES': [
+        lambda request: static('admin/css/unfold-persian.css'),
+    ],
 }

@@ -10,8 +10,9 @@ import {
   IconMapPin,
   IconArrowLeft,
 } from "@tabler/icons-react";
+import { apiClient } from "@/lib/api";
 import { copy, getLocaleDirection, localizePath, type Locale } from "@/lib/i18n";
-import { getServices } from "@/lib/services";
+import { getServices, mapApiServices } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
 const subsidiaryLinks: Record<Locale, Array<{ label: string; href: string }>> = {
@@ -36,9 +37,66 @@ type FooterProps = {
   locale?: Locale;
 };
 
-export default function Footer({ locale = "fa" }: FooterProps) {
-  const services = getServices(locale);
+function pickLocalized(
+  value: Record<string, string> | undefined,
+  locale: Locale,
+  fallback: string
+) {
+  return value?.[locale] || value?.fa || fallback;
+}
+
+async function getDisplaySettings(locale: Locale) {
+  const fallback = copy[locale].footer;
+
+  try {
+    const settings = await apiClient.getSettings();
+
+    return {
+      description: pickLocalized(
+        settings.footer_about_i18n,
+        locale,
+        settings.footer_about || fallback.description
+      ),
+      address: pickLocalized(
+        settings.address_i18n,
+        locale,
+        settings.address || fallback.address
+      ),
+      phone: settings.phone || "۰۲۱-۸۸۰۰۱۲۳۴",
+      email: settings.email || "info@persiamehr.com",
+      instagram: settings.instagram || "#",
+      telegram: settings.telegram || "#",
+      linkedin: settings.linkedin || "#",
+      whatsapp: settings.whatsapp
+        ? `https://wa.me/${settings.whatsapp.replace(/\D/g, "")}`
+        : "#",
+    };
+  } catch {
+    return {
+      description: fallback.description,
+      address: fallback.address,
+      phone: "۰۲۱-۸۸۰۰۱۲۳۴",
+      email: "info@persiamehr.com",
+      instagram: "#",
+      telegram: "#",
+      linkedin: "#",
+      whatsapp: "#",
+    };
+  }
+}
+
+async function getDisplayServices(locale: Locale) {
+  try {
+    return mapApiServices(await apiClient.getServices(), locale);
+  } catch {
+    return getServices(locale);
+  }
+}
+
+export default async function Footer({ locale = "fa" }: FooterProps) {
+  const services = await getDisplayServices(locale);
   const t = copy[locale].footer;
+  const settings = await getDisplaySettings(locale);
   const dir = getLocaleDirection(locale);
 
   return (
@@ -46,7 +104,7 @@ export default function Footer({ locale = "fa" }: FooterProps) {
       dir={dir}
       className={cn(
         "bg-neutral-900 text-neutral-300 pt-20 pb-8",
-        locale === "en" && "text-right"
+        locale === "en" && "text-left"
       )}
     >
       <div className="max-w-[1440px] mx-auto px-6 lg:px-16">
@@ -64,19 +122,19 @@ export default function Footer({ locale = "fa" }: FooterProps) {
               />
             </Link>
             <p className="text-sm leading-7 text-neutral-400 mb-8">
-              {t.description}
+              {settings.description}
             </p>
             {/* Social icons */}
             <div className="flex gap-3">
               {[
-                { Icon: IconBrandLinkedin, label: "LinkedIn" },
-                { Icon: IconBrandInstagram, label: "Instagram" },
-                { Icon: IconBrandTelegram, label: "Telegram" },
-                { Icon: IconBrandWhatsapp, label: "WhatsApp" },
-              ].map(({ Icon, label }) => (
+                { Icon: IconBrandLinkedin, label: "LinkedIn", href: settings.linkedin },
+                { Icon: IconBrandInstagram, label: "Instagram", href: settings.instagram },
+                { Icon: IconBrandTelegram, label: "Telegram", href: settings.telegram },
+                { Icon: IconBrandWhatsapp, label: "WhatsApp", href: settings.whatsapp },
+              ].map(({ Icon, label, href }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
                   aria-label={label}
                   className="w-9 h-9 rounded-lg bg-neutral-800 hover:bg-primary-500 flex items-center justify-center text-neutral-400 hover:text-white transition-all duration-200"
                 >
@@ -144,27 +202,27 @@ export default function Footer({ locale = "fa" }: FooterProps) {
                   className="text-primary-400 mt-0.5 shrink-0"
                 />
                 <span className="text-sm text-neutral-400 leading-6">
-                  {t.address}
+                  {settings.address}
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <IconPhone size={16} className="text-primary-400 shrink-0" />
                 <a
-                  href="tel:+982188001234"
+                  href={`tel:${settings.phone}`}
                   className="text-sm text-neutral-400 hover:text-primary-300 transition-colors"
                   dir="ltr"
                 >
-                  ۰۲۱-۸۸۰۰۱۲۳۴
+                  {settings.phone}
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <IconMail size={16} className="text-primary-400 shrink-0" />
                 <a
-                  href="mailto:info@persiamehr.com"
+                  href={`mailto:${settings.email}`}
                   className="text-sm text-neutral-400 hover:text-primary-300 transition-colors"
                   dir="ltr"
                 >
-                  info@persiamehr.com
+                  {settings.email}
                 </a>
               </li>
             </ul>

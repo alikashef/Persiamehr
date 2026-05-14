@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { apiClient, type ApiSubsidiary } from "@/lib/api";
 import { copy, getLocaleDirection, localizePath, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +11,7 @@ const subsidiaries = [
   {
     name: "پرسیا ساینس",
     nameEn: "Persia Science",
+    nameAr: "پرسیا ساينس",
     monogram: "PS",
     tagline: {
       fa: "تحقیق و توسعه تجهیزات پزشکی",
@@ -34,6 +36,7 @@ const subsidiaries = [
   {
     name: "مدیا مد",
     nameEn: "Media Med",
+    nameAr: "ميديا مد",
     monogram: "MM",
     tagline: {
       fa: "بازاریابی و ارتباطات پزشکی",
@@ -58,6 +61,7 @@ const subsidiaries = [
   {
     name: "پرسیا ادوانس",
     nameEn: "Persia Advance",
+    nameAr: "پرسیا أدفانس",
     monogram: "PA",
     tagline: {
       fa: "تکنولوژی و دیجیتال هلث",
@@ -82,11 +86,78 @@ const subsidiaries = [
 
 ];
 
+const toneStyles = {
+  blue: {
+    pattern: "from-blue-50 via-white to-cyan-50",
+    darkPattern: "dark:from-blue-950/55 dark:via-neutral-950 dark:to-cyan-950/40",
+    logoGradient: "from-blue-500 to-cyan-500",
+    textColor: "text-blue-600",
+    darkTextColor: "dark:text-blue-300",
+    borderColor: "border-blue-100",
+    badgeColor: "bg-blue-100 text-blue-600",
+    darkBadgeColor: "dark:bg-blue-400/10 dark:text-blue-200 dark:ring-1 dark:ring-blue-300/15",
+  },
+  rose: {
+    pattern: "from-rose-50 via-white to-pink-50",
+    darkPattern: "dark:from-rose-950/55 dark:via-neutral-950 dark:to-pink-950/40",
+    logoGradient: "from-rose-500 to-pink-500",
+    textColor: "text-rose-600",
+    darkTextColor: "dark:text-rose-300",
+    borderColor: "border-rose-100",
+    badgeColor: "bg-rose-100 text-rose-600",
+    darkBadgeColor: "dark:bg-rose-400/10 dark:text-rose-200 dark:ring-1 dark:ring-rose-300/15",
+  },
+  violet: {
+    pattern: "from-violet-50 via-white to-fuchsia-50",
+    darkPattern: "dark:from-violet-950/55 dark:via-neutral-950 dark:to-fuchsia-950/40",
+    logoGradient: "from-violet-500 to-fuchsia-500",
+    textColor: "text-violet-600",
+    darkTextColor: "dark:text-violet-300",
+    borderColor: "border-violet-100",
+    badgeColor: "bg-violet-100 text-violet-600",
+    darkBadgeColor: "dark:bg-violet-400/10 dark:text-violet-200 dark:ring-1 dark:ring-violet-300/15",
+  },
+};
+
+function mapApiSubsidiaries(records: ApiSubsidiary[]) {
+  return records.map((record) => {
+    const tone = record.style?.tone as keyof typeof toneStyles | undefined;
+    const styles = toneStyles[tone ?? "blue"];
+
+    return {
+      name: record.name_i18n?.fa ?? record.name,
+      nameEn: record.name_en,
+      nameAr: record.name_i18n?.ar ?? record.name,
+      monogram: record.monogram,
+      tagline: {
+        fa: record.tagline?.fa ?? "",
+        en: record.tagline?.en ?? "",
+        ar: record.tagline?.ar ?? "",
+      },
+      description: {
+        fa: record.description_i18n?.fa ?? record.description,
+        en: record.description_i18n?.en ?? record.description,
+        ar: record.description_i18n?.ar ?? record.description,
+      },
+      ...styles,
+    };
+  });
+}
+
+async function getDisplaySubsidiaries() {
+  try {
+    return mapApiSubsidiaries(await apiClient.getSubsidiaries());
+  } catch {
+    return subsidiaries;
+  }
+}
+
 type SubsidiariesProps = {
   locale?: Locale;
 };
 
-export default function Subsidiaries({ locale = "fa" }: SubsidiariesProps) {
+export default async function Subsidiaries({ locale = "fa" }: SubsidiariesProps) {
+  const displaySubsidiaries = await getDisplaySubsidiaries();
   const t = copy[locale].subsidiaries;
   const dir = getLocaleDirection(locale);
 
@@ -132,7 +203,7 @@ export default function Subsidiaries({ locale = "fa" }: SubsidiariesProps) {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subsidiaries.map((sub) => (
+          {displaySubsidiaries.map((sub) => (
               <Card
                 key={sub.name}
                 className={`card-hover group flex overflow-hidden rounded-2xl bg-white p-0 ${sub.borderColor} dark:border-white/10 dark:bg-neutral-900/80 dark:shadow-[0_22px_55px_rgb(0,0,0,0.32)]`}
@@ -150,7 +221,7 @@ export default function Subsidiaries({ locale = "fa" }: SubsidiariesProps) {
                         </div>
                         <div>
                           <CardTitle className="text-xl font-black text-neutral-900 transition-colors group-hover:text-primary-600">
-                            {sub.name}
+                            {locale === "ar" ? sub.nameAr : sub.name}
                           </CardTitle>
                           <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-neutral-400">
                             {sub.nameEn}

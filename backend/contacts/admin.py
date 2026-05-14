@@ -1,9 +1,11 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
+
 from .models import ContactMessage, ServiceRequest, ProductRequest
 
 
 @admin.register(ContactMessage)
-class ContactMessageAdmin(admin.ModelAdmin):
+class ContactMessageAdmin(ModelAdmin):
     list_display = ['full_name', 'email', 'phone', 'subject', 'is_read', 'created_at']
     list_editable = ['is_read']
     list_filter = ['is_read', 'created_at']
@@ -15,7 +17,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
 
 
 @admin.register(ServiceRequest)
-class ServiceRequestAdmin(admin.ModelAdmin):
+class ServiceRequestAdmin(ModelAdmin):
     list_display = ['full_name', 'company', 'phone', 'service_type', 'is_read', 'created_at']
     list_editable = ['is_read']
     list_filter = ['is_read', 'created_at']
@@ -27,7 +29,7 @@ class ServiceRequestAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProductRequest)
-class ProductRequestAdmin(admin.ModelAdmin):
+class ProductRequestAdmin(ModelAdmin):
     list_display = ['full_name', 'company', 'phone', 'product_name', 'quantity', 'is_read', 'created_at']
     list_editable = ['is_read']
     list_filter = ['is_read', 'created_at']

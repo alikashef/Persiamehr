@@ -3,7 +3,13 @@ import { notFound } from "next/navigation";
 import { IconArrowLeft, IconCheck } from "@tabler/icons-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { getServiceBySlug, services } from "@/lib/services";
+import { apiClient } from "@/lib/api";
+import {
+  getServiceBySlug,
+  mapApiService,
+  mapApiServices,
+  services,
+} from "@/lib/services";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,9 +22,25 @@ export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
 }
 
+async function getDisplayService(slug: string) {
+  try {
+    return mapApiService(await apiClient.getService(slug), "fa");
+  } catch {
+    return getServiceBySlug(slug);
+  }
+}
+
+async function getDisplayServices() {
+  try {
+    return mapApiServices(await apiClient.getServices(), "fa");
+  } catch {
+    return services;
+  }
+}
+
 export async function generateMetadata({ params }: ServicePageProps) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const service = await getDisplayService(slug);
 
   if (!service) {
     return {
@@ -34,12 +56,13 @@ export async function generateMetadata({ params }: ServicePageProps) {
 
 export default async function ServiceDetailPage({ params }: ServicePageProps) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const service = await getDisplayService(slug);
 
   if (!service) {
     notFound();
   }
 
+  const serviceLinks = await getDisplayServices();
   const Icon = service.icon;
 
   return (
@@ -136,7 +159,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 p-6 pt-4">
-                {services.map((item) => (
+                {serviceLinks.map((item) => (
                   <Button
                     key={item.slug}
                     asChild

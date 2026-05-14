@@ -51,7 +51,8 @@ import {
   stripLocale,
   type Locale,
 } from "@/lib/i18n";
-import { getServices } from "@/lib/services";
+import { apiClient } from "@/lib/api";
+import { getServices, mapApiServices } from "@/lib/services";
 
 const languageFlags: Record<Locale, string> = {
   fa: "🇮🇷",
@@ -64,6 +65,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [consultOpen, setConsultOpen] = useState(false);
   const [consultSubmitted, setConsultSubmitted] = useState(false);
+  const [consultSubmitting, setConsultSubmitting] = useState(false);
+  const [consultError, setConsultError] = useState("");
   const [consultForm, setConsultForm] = useState({
     name: "",
     mobile: "",
@@ -74,7 +77,10 @@ export default function Navbar() {
   const locale = getLocaleFromPathname(pathname);
   const dir = getLocaleDirection(locale);
   const t = copy[locale];
-  const services = getServices(locale);
+  const [navServiceState, setNavServiceState] = useState(() => ({
+    locale,
+    services: getServices(locale),
+  }));
   const unlocalizedPath = stripLocale(pathname);
   const isHome = unlocalizedPath === "/";
   const solidNav = scrolled || !isHome;
@@ -105,6 +111,26 @@ export default function Navbar() {
     { locale: "en", href: localizePath(unlocalizedPath, "en") },
     { locale: "ar", href: localizePath(unlocalizedPath, "ar") },
   ];
+  const navServices =
+    navServiceState.locale === locale
+      ? navServiceState.services
+      : getServices(locale);
+  const topLevelNavLinkClass = cn(
+    "relative rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200",
+    solidNav
+      ? "text-neutral-700 hover:!bg-primary-50 hover:!text-primary-600 dark:text-neutral-200 dark:hover:!bg-white/10 dark:hover:!text-white"
+      : "text-white/90 hover:!bg-white/10 hover:!text-white"
+  );
+  const topLevelNavTriggerClass = cn(
+    "h-9 rounded-lg px-4 text-sm font-medium",
+    solidNav
+      ? "text-neutral-700 hover:!bg-primary-50 hover:!text-primary-600 data-open:!bg-primary-50 data-open:!text-primary-600 data-popup-open:!bg-primary-50 data-popup-open:!text-primary-600 dark:text-neutral-200 dark:hover:!bg-white/10 dark:hover:!text-white dark:data-open:!bg-white/10 dark:data-open:!text-white dark:data-popup-open:!bg-white/10 dark:data-popup-open:!text-white"
+      : "bg-transparent text-white/90 hover:!bg-white/10 hover:!text-white data-open:!bg-white/10 data-open:!text-white data-popup-open:!bg-white/10 data-popup-open:!text-white"
+  );
+  const dropdownLinkClass =
+    "flex w-full rounded-xl px-4 py-3 transition-colors hover:!bg-primary-50 dark:hover:!bg-white/10";
+  const mobileNavLinkClass =
+    "block rounded-xl px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-150 hover:bg-primary-50 hover:text-primary-600 dark:text-neutral-200 dark:hover:bg-white/10 dark:hover:text-white";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -113,14 +139,58 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleConsultSubmit = (event: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    let mounted = true;
+
+    apiClient
+      .getServices()
+      .then((records) => {
+        if (mounted) {
+          setNavServiceState({ locale, services: mapApiServices(records, locale) });
+        }
+      })
+      .catch(() => {
+        if (mounted) {
+          setNavServiceState({ locale, services: getServices(locale) });
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [locale]);
+
+  const handleConsultSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setConsultSubmitted(true);
+    setConsultSubmitting(true);
+    setConsultError("");
+
+    try {
+      await apiClient.sendServiceRequest({
+        full_name: consultForm.name,
+        phone: consultForm.mobile,
+        email: "",
+        service_type: consultForm.subject,
+        description: consultForm.message || consultForm.subject,
+      });
+      setConsultSubmitted(true);
+    } catch {
+      setConsultError(
+        locale === "en"
+          ? "Could not send the request. Please try again."
+          : locale === "ar"
+            ? "تعذر إرسال الطلب. يرجى المحاولة مرة أخرى."
+            : "ارسال درخواست با خطا مواجه شد. لطفاً دوباره تلاش کنید."
+      );
+    } finally {
+      setConsultSubmitting(false);
+    }
   };
 
   const openConsultModal = () => {
     setMenuOpen(false);
     setConsultSubmitted(false);
+    setConsultError("");
     setConsultOpen(true);
   };
 
@@ -162,12 +232,7 @@ export default function Navbar() {
                     <NavigationMenuLink asChild>
                       <Link
                         href={link.href}
-                        className={cn(
-                          "relative rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200",
-                          solidNav
-                            ? "text-neutral-600 hover:bg-primary-50 hover:text-primary-500"
-                            : "text-white/90 hover:bg-white/10 hover:text-white"
-                        )}
+                        className={topLevelNavLinkClass}
                       >
                         {link.label}
                       </Link>
@@ -177,23 +242,18 @@ export default function Navbar() {
 
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
-                    className={cn(
-                      "h-9 rounded-lg px-4 text-sm font-medium",
-                      solidNav
-                        ? "text-neutral-600 hover:bg-primary-50 hover:text-primary-500 data-open:bg-primary-50 data-open:text-primary-500"
-                        : "bg-transparent text-white/90 hover:bg-white/10 hover:text-white data-open:bg-white/10 data-open:text-white"
-                    )}
+                    className={topLevelNavTriggerClass}
                   >
                     {t.nav.services}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="p-2 " dir={dir}>
-                    <div className="w-80 border-b border-neutral-100 px-3 py-2 ">
+                    <div className="w-80 border-b border-neutral-100 px-3 py-2 dark:border-white/10">
                       <div className="text-xs font-bold text-primary-500">
                         {t.nav.servicesEyebrow}
                       </div>
                     </div>
                     <ul className="grid w-80 gap-1 pt-2">
-                      {services.map((item) => {
+                      {navServices.map((item) => {
                         const Icon = item.icon;
 
                         return (
@@ -201,16 +261,16 @@ export default function Navbar() {
                             <NavigationMenuLink asChild>
                               <Link
                                 href={localizePath(`/services/${item.slug}`, locale)}
-                                className="flex w-full gap-3 rounded-xl px-4 py-3  hover:bg-primary-50"
+                                className={cn(dropdownLinkClass, "gap-3")}
                               >
-                                <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-500">
+                                <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-500 dark:bg-primary-500/10 dark:text-primary-200">
                                   <Icon size={18} />
                                 </span>
                                 <span className="min-w-0">
-                                  <span className="block w-full  text-sm font-bold text-neutral-800">
+                                  <span className="block w-full text-sm font-bold text-neutral-800 dark:text-neutral-100">
                                     {item.title}
                                   </span>
-                                  <span className="mt-1 block w-full  text-xs leading-6 text-neutral-500">
+                                  <span className="mt-1 block w-full text-xs leading-6 text-neutral-500 dark:text-neutral-400">
                                     {item.summary}
                                   </span>
                                 </span>
@@ -225,17 +285,12 @@ export default function Navbar() {
 
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
-                    className={cn(
-                      "h-9 rounded-lg px-4 text-sm font-medium",
-                      solidNav
-                        ? "text-neutral-600 hover:bg-primary-50 hover:text-primary-500 data-open:bg-primary-50 data-open:text-primary-500"
-                        : "bg-transparent text-white/90 hover:bg-white/10 hover:text-white data-open:bg-white/10 data-open:text-white"
-                    )}
+                    className={topLevelNavTriggerClass}
                   >
                     {t.nav.products}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="p-2 " dir={dir}>
-                    <div className="w-96 border-b border-neutral-100 px-3 py-2 ">
+                    <div className="w-96 border-b border-neutral-100 px-3 py-2 dark:border-white/10">
                       <div className="text-xs font-bold text-primary-500">
                         {t.nav.productsEyebrow}
                       </div>
@@ -246,12 +301,12 @@ export default function Navbar() {
                           <NavigationMenuLink asChild>
                             <Link
                               href={item.href}
-                              className="flex w-full flex-col items-stretch rounded-xl px-4 py-3  hover:bg-primary-50"
+                              className={cn(dropdownLinkClass, "flex-col items-stretch")}
                             >
-                              <span className="block w-full  text-sm font-bold text-neutral-800">
+                              <span className="block w-full text-sm font-bold text-neutral-800 dark:text-neutral-100">
                                 {item.label}
                               </span>
-                              <span className="mt-1 block w-full  text-xs leading-6 text-neutral-500">
+                              <span className="mt-1 block w-full text-xs leading-6 text-neutral-500 dark:text-neutral-400">
                                 {item.description}
                               </span>
                             </Link>
@@ -267,12 +322,7 @@ export default function Navbar() {
                     <NavigationMenuLink asChild>
                       <Link
                         href={link.href}
-                        className={cn(
-                          "relative rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200",
-                          solidNav
-                            ? "text-neutral-600 hover:bg-primary-50 hover:text-primary-500"
-                            : "text-white/90 hover:bg-white/10 hover:text-white"
-                        )}
+                        className={topLevelNavLinkClass}
                       >
                         {link.label}
                       </Link>
@@ -323,6 +373,7 @@ export default function Navbar() {
                       asChild
                       className={cn(
                         "cursor-pointer justify-between rounded-lg px-3 py-2.5 font-semibold",
+                        item.locale === "en" ? "text-left" : "text-right",
                         item.locale === locale
                           ? "bg-primary-50 text-primary-500 dark:bg-primary-500/10 dark:text-primary-200"
                           : "text-neutral-700 dark:text-neutral-200"
@@ -398,7 +449,7 @@ export default function Navbar() {
                   <SheetClose asChild key={link.href}>
                     <Link
                       href={link.href}
-                      className="block rounded-xl px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-150 hover:bg-primary-50 hover:text-primary-500"
+                      className={mobileNavLinkClass}
                     >
                       {link.label}
                     </Link>
@@ -409,14 +460,14 @@ export default function Navbar() {
                   <div className="px-4 pb-2 text-xs font-bold text-neutral-400">
                     {t.nav.services}
                   </div>
-                  {services.map((link) => (
+                  {navServices.map((link) => (
                     <SheetClose asChild key={link.slug}>
                       <Link
                         href={localizePath(`/services/${link.slug}`, locale)}
-                        className="block rounded-xl px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-150 hover:bg-primary-50 hover:text-primary-500"
+                        className={mobileNavLinkClass}
                       >
                         <span className="block">{link.title}</span>
-                        <span className="mt-1 block text-xs font-medium leading-5 text-neutral-400">
+                        <span className="mt-1 block text-xs font-medium leading-5 text-neutral-400 dark:text-neutral-500">
                           {link.summary}
                         </span>
                       </Link>
@@ -432,10 +483,10 @@ export default function Navbar() {
                     <SheetClose asChild key={link.label}>
                       <Link
                         href={link.href}
-                        className="block rounded-xl px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-150 hover:bg-primary-50 hover:text-primary-500"
+                        className={mobileNavLinkClass}
                       >
                         <span className="block">{link.label}</span>
-                        <span className="mt-1 block text-xs font-medium leading-5 text-neutral-400">
+                        <span className="mt-1 block text-xs font-medium leading-5 text-neutral-400 dark:text-neutral-500">
                           {link.description}
                         </span>
                       </Link>
@@ -452,7 +503,10 @@ export default function Navbar() {
                       <Link
                         href={link.href}
                         dir={getLocaleDirection(link.locale)}
-                        className="block rounded-xl px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-150 hover:bg-primary-50 hover:text-primary-500"
+                        className={cn(
+                          mobileNavLinkClass,
+                          link.locale === "en" ? "text-left" : "text-right"
+                        )}
                       >
                         {languageLabels[link.locale]}
                       </Link>
@@ -465,7 +519,7 @@ export default function Navbar() {
                     <SheetClose asChild key={link.href}>
                       <Link
                         href={link.href}
-                        className="block rounded-xl px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-150 hover:bg-primary-50 hover:text-primary-500"
+                        className={mobileNavLinkClass}
                       >
                         {link.label}
                       </Link>
@@ -587,11 +641,23 @@ export default function Navbar() {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={consultSubmitting}
                   className="h-12 w-full rounded-xl bg-primary-500 font-semibold text-white shadow-lg shadow-primary-500/25 hover:bg-primary-600"
                 >
                   <IconSend size={17} />
-                  {t.consultation.submit}
+                  {consultSubmitting
+                    ? locale === "en"
+                      ? "Sending..."
+                      : locale === "ar"
+                        ? "جار الإرسال..."
+                        : "در حال ارسال..."
+                    : t.consultation.submit}
                 </Button>
+                {consultError && (
+                  <p className="text-sm font-medium text-red-500">
+                    {consultError}
+                  </p>
+                )}
               </form>
             )}
           </div>

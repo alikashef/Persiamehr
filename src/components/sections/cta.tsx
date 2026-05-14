@@ -16,11 +16,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContact, type ContactFormState } from "@/app/actions/contact";
+import type { SiteSettings } from "@/lib/api";
 
 const initialState: ContactFormState = { success: false };
 
-export default function CTA() {
+type CTAProps = {
+  settings?: Pick<SiteSettings, "phone" | "email" | "linkedin">;
+};
+
+export default function CTA({ settings }: CTAProps) {
   const [state, action, pending] = useActionState(submitContact, initialState);
+  const phone = settings?.phone || "۰۲۱-۸۸۰۰۱۲۳۴";
+  const email = settings?.email || "info@persiamehr.com";
+  const linkedin = settings?.linkedin || "#";
 
   return (
     <section id="contact" className="py-24 bg-white relative overflow-hidden">
@@ -161,7 +169,7 @@ export default function CTA() {
               </CardHeader>
               <CardContent className="space-y-4 p-6 pt-4">
               <a
-                href="tel:+982188001234"
+                href={`tel:${phone}`}
                 className="flex items-center gap-3 group"
               >
                 <div className="w-9 h-9 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center shrink-0">
@@ -173,12 +181,12 @@ export default function CTA() {
                     className="text-sm font-semibold text-neutral-800 group-hover:text-primary-600 transition-colors"
                     dir="ltr"
                   >
-                    ۰۲۱-۸۸۰۰۱۲۳۴
+                    {phone}
                   </div>
                 </div>
               </a>
               <a
-                href="mailto:info@persiamehr.com"
+                href={`mailto:${email}`}
                 className="flex items-center gap-3 group"
               >
                 <div className="w-9 h-9 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center shrink-0">
@@ -190,11 +198,11 @@ export default function CTA() {
                     className="text-sm font-semibold text-neutral-800 group-hover:text-primary-600 transition-colors"
                     dir="ltr"
                   >
-                    info@persiamehr.com
+                    {email}
                   </div>
                 </div>
               </a>
-              <a href="#" className="flex items-center gap-3 group">
+              <a href={linkedin} className="flex items-center gap-3 group">
                 <div className="w-9 h-9 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center shrink-0">
                   <IconBrandLinkedin size={16} className="text-primary-500" />
                 </div>

@@ -6,8 +6,14 @@ import Navbar from "@/components/navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { apiClient } from "@/lib/api";
 import { getLocaleDirection, isLocale, localizePath, type Locale } from "@/lib/i18n";
-import { getServiceBySlug, getServices } from "@/lib/services";
+import {
+  getServiceBySlug,
+  getServices,
+  mapApiService,
+  mapApiServices,
+} from "@/lib/services";
 import { cn } from "@/lib/utils";
 
 type LocalizedServicePageProps = {
@@ -35,6 +41,22 @@ export function generateStaticParams() {
   );
 }
 
+async function getDisplayService(slug: string, locale: Exclude<Locale, "fa">) {
+  try {
+    return mapApiService(await apiClient.getService(slug), locale);
+  } catch {
+    return getServiceBySlug(slug, locale);
+  }
+}
+
+async function getDisplayServices(locale: Exclude<Locale, "fa">) {
+  try {
+    return mapApiServices(await apiClient.getServices(), locale);
+  } catch {
+    return getServices(locale);
+  }
+}
+
 export async function generateMetadata({ params }: LocalizedServicePageProps) {
   const { locale, slug } = await params;
 
@@ -42,7 +64,7 @@ export async function generateMetadata({ params }: LocalizedServicePageProps) {
     return {};
   }
 
-  const service = getServiceBySlug(slug, locale);
+  const service = await getDisplayService(slug, locale);
 
   if (!service) {
     return {
@@ -66,12 +88,13 @@ export default async function LocalizedServiceDetailPage({
   }
 
   const currentLocale = locale as Exclude<Locale, "fa">;
-  const service = getServiceBySlug(slug, currentLocale);
+  const service = await getDisplayService(slug, currentLocale);
 
   if (!service) {
     notFound();
   }
 
+  const serviceLinks = await getDisplayServices(currentLocale);
   const Icon = service.icon;
   const dir = getLocaleDirection(currentLocale);
   const t = servicePageCopy[currentLocale];
@@ -176,7 +199,7 @@ export default async function LocalizedServiceDetailPage({
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 p-6 pt-4">
-                {getServices(currentLocale).map((item) => (
+                {serviceLinks.map((item) => (
                   <Button
                     key={item.slug}
                     asChild

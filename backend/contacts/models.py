@@ -22,7 +22,7 @@ class ContactMessage(models.Model):
 class ServiceRequest(models.Model):
     full_name = models.CharField(max_length=150, verbose_name='نام و نام خانوادگی')
     company = models.CharField(max_length=200, verbose_name='نام شرکت/سازمان', blank=True)
-    email = models.EmailField(verbose_name='ایمیل')
+    email = models.EmailField(verbose_name='ایمیل', blank=True)
     phone = models.CharField(max_length=20, verbose_name='شماره تماس')
     service_type = models.CharField(max_length=200, verbose_name='نوع خدمت مورد نظر')
     description = models.TextField(verbose_name='توضیحات و جزئیات درخواست')
@@ -41,7 +41,7 @@ class ServiceRequest(models.Model):
 class ProductRequest(models.Model):
     full_name = models.CharField(max_length=150, verbose_name='نام و نام خانوادگی')
     company = models.CharField(max_length=200, verbose_name='نام شرکت/سازمان', blank=True)
-    email = models.EmailField(verbose_name='ایمیل')
+    email = models.EmailField(verbose_name='ایمیل', blank=True)
     phone = models.CharField(max_length=20, verbose_name='شماره تماس')
     product_name = models.CharField(max_length=200, verbose_name='نام محصول مورد نظر')
     quantity = models.CharField(max_length=100, verbose_name='تعداد/مقدار', blank=True)

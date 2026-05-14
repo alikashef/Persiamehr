@@ -3,12 +3,19 @@ import {
   IconSitemap,
   IconUserStar,
 } from "@tabler/icons-react";
+import type { ApiService } from "@/lib/api";
 import type { Locale } from "@/lib/i18n";
+
+export const serviceIconMap = {
+  school: IconSchool,
+  sitemap: IconSitemap,
+  "user-star": IconUserStar,
+};
 
 export const services = [
   {
     slug: "executive-consulting",
-    icon: IconUserStar,
+    icon: serviceIconMap["user-star"],
     title: "مشاوره اجرایی",
     summary:
       "مشاوره اجرایی با هدف توسعه بازار شرکت‌های تجهیزات پزشکی داخلی و خارجی.",
@@ -33,7 +40,7 @@ export const services = [
   },
   {
     slug: "medical-education-program-design",
-    icon: IconSitemap,
+    icon: serviceIconMap.sitemap,
     title: "طراحی و مدیریت برنامه‌های پزشکی",
     summary:
       "طراحی و مدیریت برگزاری سمینار، کنگره پزشکی، دوره‌های آموزشی و کارگاه‌های تخصصی حضوری و آنلاین.",
@@ -58,7 +65,7 @@ export const services = [
   },
   {
     slug: "surgical-training-execution",
-    icon: IconSchool,
+    icon: serviceIconMap.school,
     title: "مجری برگزاری دوره‌های جراحی",
     summary:
       "مجری برگزاری دوره‌های جراحی عمومی، جراحی پلاستیک، چاقی، زنان، اندوسکوپی و رباتیک.",
@@ -237,4 +244,36 @@ export function getServices(locale: Locale = "fa") {
 
 export function getServiceBySlug(slug: string, locale: Locale = "fa") {
   return getServices(locale).find((service) => service.slug === slug);
+}
+
+function pickLocalized<T>(value: Record<string, T> | T, locale: Locale, fallback: T) {
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    return (value as Record<string, T>)[locale] ?? (value as Record<string, T>).fa ?? fallback;
+  }
+
+  return (value as T) ?? fallback;
+}
+
+export function mapApiService(record: ApiService, locale: Locale): ServiceItem {
+  const fallbackServices = getServices(locale);
+  const fallback =
+    fallbackServices.find((item) => item.slug === record.slug) ?? fallbackServices[0];
+  const icon =
+    serviceIconMap[record.icon_key as keyof typeof serviceIconMap] ?? fallback.icon;
+
+  return {
+    ...fallback,
+    slug: record.slug,
+    icon,
+    title: pickLocalized(record.title_i18n, locale, record.title),
+    summary: pickLocalized(record.summary_i18n, locale, record.summary),
+    description: pickLocalized(record.description_i18n, locale, record.description),
+    tags: pickLocalized(record.tags, locale, fallback.tags),
+    sections: pickLocalized(record.sections, locale, fallback.sections),
+    highlight: record.highlight,
+  };
+}
+
+export function mapApiServices(records: ApiService[], locale: Locale): ServiceItem[] {
+  return records.map((record) => mapApiService(record, locale));
 }

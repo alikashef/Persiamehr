@@ -105,6 +105,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.font-inter-locale {
+  font-family: var(--font-inter), 'Arial', sans-serif;
+}
+
+.font-inter-locale * {
+  font-family: inherit;
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;

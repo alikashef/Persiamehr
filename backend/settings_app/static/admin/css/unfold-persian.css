@@ -1,0 +1,221 @@
+@font-face {
+  font-display: swap;
+  font-family: "IRANYekanXFaNum";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/static/fonts/IRANYekanXFaNum-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "IRANYekanXFaNum";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/static/fonts/IRANYekanXFaNum-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "IRANYekanXFaNum";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/static/fonts/IRANYekanXFaNum-Bold.woff2") format("woff2");
+}
+
+:root {
+  --font-sans: "IRANYekanXFaNum", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  direction: rtl;
+  font-family: var(--font-sans);
+  text-align: right;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-sans) !important;
+  letter-spacing: 0;
+}
+
+table,
+th,
+td,
+label,
+.breadcrumbs,
+.messagelist,
+.help,
+.errorlist,
+.object-tools,
+.submit-row {
+  text-align: right;
+}
+
+input,
+select,
+textarea {
+  direction: rtl;
+  text-align: right;
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="number"],
+.form-row input[type="url"],
+.form-row input[type="password"],
+.form-row select,
+.form-row textarea,
+input.persiamehr-admin-input,
+textarea.persiamehr-admin-textarea {
+  border: 1px solid rgb(229 231 235) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04) !important;
+}
+
+.form-row input[type="text"]:focus,
+.form-row input[type="email"]:focus,
+.form-row input[type="number"]:focus,
+.form-row input[type="url"]:focus,
+.form-row input[type="password"]:focus,
+.form-row select:focus,
+.form-row textarea:focus,
+input.persiamehr-admin-input:focus,
+textarea.persiamehr-admin-textarea:focus {
+  border-color: rgb(147 51 234) !important;
+  outline: 2px solid rgb(147 51 234 / 0.28) !important;
+  outline-offset: 0 !important;
+}
+
+textarea.persiamehr-admin-textarea {
+  line-height: 1.9 !important;
+  min-height: 5.5rem;
+  resize: vertical;
+}
+
+.dark .form-row input[type="text"],
+.dark .form-row input[type="email"],
+.dark .form-row input[type="number"],
+.dark .form-row input[type="url"],
+.dark .form-row input[type="password"],
+.dark .form-row select,
+.dark .form-row textarea,
+.dark input.persiamehr-admin-input,
+.dark textarea.persiamehr-admin-textarea {
+  border-color: rgb(55 65 81) !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.18) !important;
+}
+
+input[type="email"],
+input[type="number"],
+input[type="url"],
+input[name*="email" i],
+input[name*="phone" i],
+input[name*="slug" i],
+input[name*="url" i],
+input[name*="website" i],
+.vEmailField,
+.vIntegerField,
+.vPositiveSmallIntegerField,
+.vURLField {
+  direction: ltr;
+  text-align: left;
+}
+
+.material-symbols-outlined,
+.material-symbols-rounded,
+.material-symbols-sharp {
+  direction: ltr;
+}
+
+#changelist-actions {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: calc(100vw - 1.5rem);
+}
+
+#changelist-actions > div {
+  direction: rtl;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+#changelist-actions .actions .group.primary,
+#changelist-actions .group.primary {
+  direction: rtl;
+  flex-direction: row;
+  min-width: 0;
+}
+
+#changelist-actions .actions select,
+#changelist-actions select[name="action"] {
+  direction: rtl;
+  max-width: min(26rem, 42vw);
+  min-width: 14rem;
+  text-align: right;
+}
+
+#changelist-actions button[name="index"] {
+  margin-inline-start: 0.5rem;
+  margin-inline-end: 0;
+}
+
+#changelist-actions .action-counter,
+#changelist-actions .all,
+#changelist-actions .question,
+#changelist-actions .clear {
+  text-align: right;
+  white-space: nowrap;
+}
+
+#changelist-actions .question {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+@media (min-width: 1280px) {
+  #changelist-actions-wrapper {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  #changelist-actions-wrapper.xl\:ml-72 {
+    margin-left: 0 !important;
+    margin-right: 18rem !important;
+  }
+
+  #changelist-actions-wrapper.xl\:ml-72 #changelist-actions {
+    max-width: calc(100vw - 18rem - 1.5rem);
+  }
+
+  #changelist-actions-wrapper.xl\:ml-0 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #changelist-actions > div {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  #changelist-actions .actions .group.primary,
+  #changelist-actions .group.primary {
+    flex-direction: column;
+  }
+
+  #changelist-actions .actions select,
+  #changelist-actions select[name="action"] {
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+  }
+
+  #changelist-actions button[name="index"] {
+    margin-inline-start: 0;
+  }
+}

@@ -3,16 +3,26 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { apiClient } from "@/lib/api";
 import { copy, getLocaleDirection, localizePath, type Locale } from "@/lib/i18n";
-import { getServices } from "@/lib/services";
+import { getServices, mapApiServices } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
 type ServicesProps = {
   locale?: Locale;
 };
 
-export default function Services({ locale = "fa" }: ServicesProps) {
-  const services = getServices(locale);
+async function getDisplayServices(locale: Locale) {
+  try {
+    const records = await apiClient.getServices();
+    return mapApiServices(records, locale);
+  } catch {
+    return getServices(locale);
+  }
+}
+
+export default async function Services({ locale = "fa" }: ServicesProps) {
+  const services = await getDisplayServices(locale);
   const t = copy[locale].servicesSection;
   const dir = getLocaleDirection(locale);
 
