@@ -15,12 +15,12 @@ class Migration(migrations.Migration):
             name='description_i18n',
             field=models.JSONField(blank=True, default=dict, verbose_name='توضیحات چندزبانه'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='subsidiary',
             name='monogram',
             field=models.CharField(blank=True, max_length=20, verbose_name='مونوگرام'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='subsidiary',
             name='name_en',
             field=models.CharField(blank=True, max_length=200, verbose_name='نام انگلیسی'),
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             name='style',
             field=models.JSONField(blank=True, default=dict, verbose_name='تنظیمات ظاهری'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='subsidiary',
             name='tagline',
             field=models.JSONField(blank=True, default=dict, verbose_name='تگ\u200cلاین چندزبانه'),

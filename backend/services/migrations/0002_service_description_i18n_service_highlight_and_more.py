@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='description_i18n',
             field=models.JSONField(blank=True, default=dict, verbose_name='توضیحات چندزبانه'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='service',
             name='highlight',
             field=models.BooleanField(default=False, verbose_name='نمایش ویژه'),
@@ -25,12 +25,12 @@ class Migration(migrations.Migration):
             name='icon_key',
             field=models.CharField(blank=True, max_length=80, verbose_name='کلید آیکون'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='service',
             name='sections',
             field=models.JSONField(blank=True, default=list, verbose_name='بخش\u200cهای توضیحات'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='service',
             name='summary',
             field=models.TextField(blank=True, verbose_name='خلاصه'),
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             name='summary_i18n',
             field=models.JSONField(blank=True, default=dict, verbose_name='خلاصه چندزبانه'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='service',
             name='tags',
             field=models.JSONField(blank=True, default=list, verbose_name='برچسب\u200cها'),
