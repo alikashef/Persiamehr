@@ -18,7 +18,7 @@ WRITE_ACTIONS = ['create', 'update', 'partial_update', 'destroy']
 )
 class SubsidiaryViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', 'name_en', 'description', 'description_en']
+    search_fields = ['name', 'name_en', 'description']
     ordering_fields = ['order', 'created_at']
     lookup_field = 'slug'
 
