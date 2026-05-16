@@ -16,6 +16,7 @@ class SubsidiaryLocaleSerializer(serializers.ModelSerializer):
             'tagline',
             'description',
             'description_i18n',
+            'logo',
             'website',
             'style',
             'is_active',

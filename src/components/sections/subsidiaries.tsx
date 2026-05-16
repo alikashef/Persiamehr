@@ -13,6 +13,7 @@ const subsidiaries = [
     nameEn: "Persia Science",
     nameAr: "پرسیا ساينس",
     monogram: "PS",
+    logo: "",
     tagline: {
       fa: "تحقیق و توسعه تجهیزات پزشکی",
       en: "Medical equipment R&D",
@@ -38,6 +39,7 @@ const subsidiaries = [
     nameEn: "Media Med",
     nameAr: "ميديا مد",
     monogram: "MM",
+    logo: "",
     tagline: {
       fa: "بازاریابی و ارتباطات پزشکی",
       en: "Medical marketing and communications",
@@ -63,6 +65,7 @@ const subsidiaries = [
     nameEn: "Persia Advance",
     nameAr: "پرسیا أدفانس",
     monogram: "PA",
+    logo: "",
     tagline: {
       fa: "تکنولوژی و دیجیتال هلث",
       en: "Technology and digital health",
@@ -119,6 +122,18 @@ const toneStyles = {
   },
 };
 
+function resolveLogoUrl(logo: string | null) {
+  if (!logo) {
+    return "";
+  }
+
+  if (logo.startsWith("http://") || logo.startsWith("https://") || logo.startsWith("/")) {
+    return logo;
+  }
+
+  return `/media/${logo}`;
+}
+
 function mapApiSubsidiaries(records: ApiSubsidiary[]) {
   return records.map((record) => {
     const tone = record.style?.tone as keyof typeof toneStyles | undefined;
@@ -129,6 +144,7 @@ function mapApiSubsidiaries(records: ApiSubsidiary[]) {
       nameEn: record.name_en,
       nameAr: record.name_i18n?.ar ?? record.name,
       monogram: record.monogram,
+      logo: resolveLogoUrl(record.logo),
       tagline: {
         fa: record.tagline?.fa ?? "",
         en: record.tagline?.en ?? "",
@@ -215,9 +231,17 @@ export default async function Subsidiaries({ locale = "fa" }: SubsidiariesProps)
                     <div className="relative flex items-start justify-between gap-4">
                       <div className="flex items-center gap-4">
                         <div
-                          className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${sub.logoGradient} text-lg font-black tracking-wide text-white shadow-lg shadow-black/10 ring-1 ring-white/35 dark:shadow-black/35 dark:ring-white/15`}
+                          className={`flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${sub.logoGradient} text-lg font-black tracking-wide text-white shadow-lg shadow-black/10 ring-1 ring-white/35 dark:shadow-black/35 dark:ring-white/15`}
                         >
-                          {sub.monogram}
+                          {sub.logo ? (
+                            <img
+                              src={sub.logo}
+                              alt={locale === "ar" ? sub.nameAr : sub.name}
+                              className="h-full w-full bg-white object-contain p-1.5"
+                            />
+                          ) : (
+                            sub.monogram
+                          )}
                         </div>
                         <div>
                           <CardTitle className="text-xl font-black text-neutral-900 transition-colors group-hover:text-primary-600">

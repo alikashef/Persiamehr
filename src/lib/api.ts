@@ -54,6 +54,7 @@ export type ApiSubsidiary = {
   tagline: Record<string, string>;
   description: string;
   description_i18n: Record<string, string>;
+  logo: string | null;
   website: string;
   style: Record<string, string>;
   is_active: boolean;
