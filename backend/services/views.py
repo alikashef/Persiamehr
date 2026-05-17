@@ -18,7 +18,7 @@ WRITE_ACTIONS = ['create', 'update', 'partial_update', 'destroy']
 )
 class ServiceViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['title', 'title_en', 'description', 'description_en']
+    search_fields = ['title', 'description']
     ordering_fields = ['order', 'created_at']
     lookup_field = 'slug'
 
