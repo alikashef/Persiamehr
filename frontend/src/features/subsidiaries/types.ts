@@ -1,4 +1,3 @@
-import { IconBriefcase, IconSchool } from "@tabler/icons-react";
 import type { ApiDepartmentCategory, ApiSubsidiary } from "@/lib/api";
 
 export type Department = string;
@@ -31,26 +30,6 @@ export type SubsidiaryItem = {
   badgeColor: string;
   darkBadgeColor: string;
 };
-
-export const subsidiaryDepartmentIconMap = {
-  education: IconSchool,
-  commerce: IconBriefcase,
-};
-
-export const departmentCategories: DepartmentCategoryItem[] = [
-  {
-    title: "آموزشی",
-    slug: "education",
-    description: "",
-    order: 1,
-  },
-  {
-    title: "بازرگانی",
-    slug: "commerce",
-    description: "",
-    order: 2,
-  },
-];
 
 const toneStyles = {
   blue: {
@@ -85,90 +64,6 @@ const toneStyles = {
   },
 };
 
-export const subsidiaries: SubsidiaryItem[] = [
-  {
-    name: "پرسیا ساینس",
-    slug: "persia-science",
-    department: "commerce",
-    monogram: "PS",
-    logo: "",
-    website: "",
-    tagline: "تحقیق و توسعه تجهیزات پزشکی",
-    description:
-      "واردات و توزیع تجهیزات پیشرفته پزشکی از برندهای معتبر اروپایی و آمریکایی.",
-    sections: [
-      {
-        title: "تمرکز اصلی",
-        body: "تمرکز این برند بر شناسایی، تامین و توسعه سبد تجهیزات پزشکی پیشرفته برای مراکز درمانی و شرکت‌های سلامت است.",
-      },
-      {
-        title: "حوزه فعالیت",
-        body: "واردات، توزیع و پشتیبانی از محصولات پزشکی تخصصی با همکاری تامین‌کنندگان معتبر بین‌المللی.",
-      },
-      {
-        title: "ارزش برای بازار",
-        body: "افزایش دسترسی بازار داخلی به تکنولوژی‌های نوین پزشکی و کمک به ارتقای کیفیت خدمات درمانی.",
-      },
-    ],
-    tags: ["واردات", "تجهیزات پیشرفته", "توزیع پزشکی"],
-    ...toneStyles.blue,
-  },
-  {
-    name: "مدیا مد",
-    slug: "media-med",
-    department: "education",
-    monogram: "MM",
-    logo: "",
-    website: "",
-    tagline: "بازاریابی و ارتباطات پزشکی",
-    description:
-      "خدمات بازاریابی تخصصی، تولید محتوای علمی و استراتژی ارتباطات برای شرکت‌های پزشکی.",
-    sections: [
-      {
-        title: "تمرکز اصلی",
-        body: "توسعه ارتباطات برندهای پزشکی با جامعه تخصصی و مخاطبان هدف از مسیر بازاریابی علمی.",
-      },
-      {
-        title: "خدمات کلیدی",
-        body: "تولید محتوا، طراحی کمپین‌های تخصصی، مدیریت ارتباطات و اجرای برنامه‌های رسانه‌ای هدفمند.",
-      },
-      {
-        title: "نتیجه همکاری",
-        body: "افزایش دیده‌شدن برند، اعتماد حرفه‌ای بیشتر و بهبود عملکرد ارتباطی در بازار سلامت.",
-      },
-    ],
-    tags: ["بازاریابی پزشکی", "محتوای علمی", "ارتباطات برند"],
-    ...toneStyles.rose,
-  },
-  {
-    name: "پرسیا ادوانس",
-    slug: "persia-advance",
-    department: "commerce",
-    monogram: "PA",
-    logo: "",
-    website: "",
-    tagline: "تکنولوژی و دیجیتال هلث",
-    description:
-      "توسعه راهکارهای دیجیتال بهداشت و پیاده‌سازی سیستم‌های هوشمند در مراکز درمانی.",
-    sections: [
-      {
-        title: "تمرکز اصلی",
-        body: "طراحی و پیاده‌سازی راهکارهای فناورانه برای بهبود فرایندهای درمانی و مدیریتی در حوزه سلامت.",
-      },
-      {
-        title: "حوزه فعالیت",
-        body: "داده‌محوری، سیستم‌های هوشمند، پلتفرم‌های سلامت دیجیتال و یکپارچه‌سازی فرایندهای عملیاتی.",
-      },
-      {
-        title: "مزیت رقابتی",
-        body: "کاهش خطاهای عملیاتی، بهبود سرعت تصمیم‌گیری و ایجاد زیرساخت دیجیتال قابل توسعه برای مراکز درمانی.",
-      },
-    ],
-    tags: ["سلامت دیجیتال", "سیستم هوشمند", "فناوری پزشکی"],
-    ...toneStyles.violet,
-  },
-];
-
 export function mapApiDepartmentCategory(
   record: ApiDepartmentCategory
 ): DepartmentCategoryItem {
@@ -186,7 +81,7 @@ export function mapApiDepartmentCategories(
   return records.map((record) => mapApiDepartmentCategory(record));
 }
 
-function resolveDepartment(record: ApiSubsidiary, fallback?: SubsidiaryItem): Department {
+function resolveDepartment(record: ApiSubsidiary): Department {
   if (record.department_category?.slug) {
     return record.department_category.slug;
   }
@@ -214,10 +109,6 @@ function resolveDepartment(record: ApiSubsidiary, fallback?: SubsidiaryItem): De
     return "commerce";
   }
 
-  if (fallback) {
-    return fallback.department;
-  }
-
   const haystack = [record.slug, record.name, record.tagline].join(" ").toLowerCase();
   return haystack.includes("دوره") || haystack.includes("آموز") ? "education" : "commerce";
 }
@@ -234,28 +125,22 @@ function resolveLogoUrl(logo: string | null) {
   return `/media/${logo}`;
 }
 
-function fallbackForSlug(slug: string) {
-  return subsidiaries.find((item) => item.slug === slug) ?? subsidiaries[0];
-}
-
 export function mapApiSubsidiary(record: ApiSubsidiary): SubsidiaryItem {
   const tone = record.style?.tone as keyof typeof toneStyles | undefined;
   const styles = toneStyles[tone ?? "blue"];
-  const fallback = fallbackForSlug(record.slug);
 
   return {
-    ...fallback,
     ...styles,
     name: record.name,
     slug: record.slug,
-    department: resolveDepartment(record, fallback),
+    department: resolveDepartment(record),
     monogram: record.monogram,
     logo: resolveLogoUrl(record.logo),
-    website: record.website ?? fallback.website,
-    tagline: record.tagline || fallback.tagline,
-    description: record.description || fallback.description,
-    sections: fallback.sections,
-    tags: fallback.tags,
+    website: record.website ?? "",
+    tagline: record.tagline,
+    description: record.description,
+    sections: [],
+    tags: [],
   };
 }
 
@@ -263,14 +148,15 @@ export function mapApiSubsidiaries(records: ApiSubsidiary[]): SubsidiaryItem[] {
   return records.map((record) => mapApiSubsidiary(record));
 }
 
-export function getSubsidiaries() {
-  return subsidiaries;
+export function getSubsidiaries(): SubsidiaryItem[] {
+  return [];
 }
 
-export function getDepartmentCategories() {
-  return departmentCategories;
+export function getDepartmentCategories(): DepartmentCategoryItem[] {
+  return [];
 }
 
 export function getSubsidiaryBySlug(slug: string) {
-  return subsidiaries.find((item) => item.slug === slug);
+  void slug;
+  return undefined;
 }

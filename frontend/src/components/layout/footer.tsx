@@ -13,12 +13,7 @@ import {
 import { apiClient } from "@/lib/api";
 import { copy } from "@/constants/copy";
 import { getServices, mapApiServices } from "@/features/services/types";
-
-const subsidiaryLinks = [
-  { label: "پرسیا ساینس", href: "/#subsidiaries" },
-  { label: "مدیا مد", href: "/#subsidiaries" },
-  { label: "پرسیا ادوانس", href: "/#subsidiaries" },
-];
+import { mapApiSubsidiaries } from "@/features/subsidiaries/types";
 
 async function getDisplaySettings() {
   const fallback = copy.footer;
@@ -60,9 +55,20 @@ async function getDisplayServices() {
   }
 }
 
+async function getDisplaySubsidiaries() {
+  try {
+    return mapApiSubsidiaries(await apiClient.getSubsidiaries());
+  } catch {
+    return [];
+  }
+}
+
 export default async function Footer() {
-  const services = await getDisplayServices();
-  const settings = await getDisplaySettings();
+  const [services, settings, subsidiaries] = await Promise.all([
+    getDisplayServices(),
+    getDisplaySettings(),
+    getDisplaySubsidiaries(),
+  ]);
   const t = copy.footer;
 
   return (
@@ -128,17 +134,17 @@ export default async function Footer() {
               {t.subsidiaries}
             </h4>
             <ul className="space-y-3">
-              {subsidiaryLinks.map((link) => (
-                <li key={link.label}>
+              {subsidiaries.map((item) => (
+                <li key={item.slug}>
                   <Link
-                    href={link.href}
+                    href={`/subsidiaries/${item.slug}`}
                     className="group flex items-center gap-2 text-sm text-neutral-400 transition-colors duration-150 hover:text-primary-300"
                   >
                     <IconArrowLeft
                       size={13}
                       className="rotate-180 text-neutral-600 transition-colors group-hover:text-primary-400"
                     />
-                    {link.label}
+                    {item.name}
                   </Link>
                 </li>
               ))}
