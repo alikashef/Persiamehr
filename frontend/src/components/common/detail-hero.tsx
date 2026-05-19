@@ -15,6 +15,7 @@ type DetailHeroProps = {
   aside?: React.ReactNode;
   className?: string;
   mediaClassName?: string;
+  mediaNode?: React.ReactNode;
 };
 
 export function DetailHero({
@@ -27,16 +28,23 @@ export function DetailHero({
   aside,
   className,
   mediaClassName,
+  mediaNode,
 }: DetailHeroProps) {
   return (
     <section
       className={cn(
-        "bg-neutral-950 pb-16 pt-32 text-white",
+        "relative overflow-hidden bg-neutral-950 pb-16 pt-32 text-white",
         mediaClassName,
         className
       )}
     >
-      <div className={pageContainer}>
+      {mediaNode ? (
+        <div aria-hidden="true" className="absolute inset-0">
+          {mediaNode}
+        </div>
+      ) : null}
+
+      <div className={cn(pageContainer, "relative z-10")}>
         <Link
           href={backHref}
           className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-white/70 transition-colors hover:text-white"

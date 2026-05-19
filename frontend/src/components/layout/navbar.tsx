@@ -243,6 +243,7 @@ export default function Navbar() {
                     <div className="px-4 pb-2 text-xs font-bold text-neutral-400">
                       دپارتمان‌ها
                     </div>
+                    
                     {subsidiaryGroups.map((group) => (
                       <div key={group.slug} className="pb-2">
                         <div className="px-4 py-2 text-xs font-bold text-neutral-500 dark:text-neutral-400">
@@ -261,6 +262,7 @@ export default function Navbar() {
                       </div>
                     ))}
                   </div>
+                  
 
                   <div className="pt-3">
                     <div className="px-4 pb-2 text-xs font-bold text-neutral-400">

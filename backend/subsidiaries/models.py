@@ -34,6 +34,7 @@ class Subsidiary(models.Model):
     tagline = models.CharField(max_length=300, verbose_name='تگ‌لاین', blank=True)
     description = models.TextField(verbose_name='توضیحات')
     logo = models.ImageField(upload_to='subsidiaries/logos/', verbose_name='لوگو', blank=True, null=True)
+    header_image = models.ImageField(upload_to='subsidiaries/headers/', verbose_name='تصویر هدر', blank=True, null=True)
     website = models.URLField(verbose_name='وبسایت', blank=True)
     style = models.JSONField(verbose_name='تنظیمات ظاهری', default=dict, blank=True)
     is_active = models.BooleanField(default=True, verbose_name='فعال')

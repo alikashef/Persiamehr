@@ -37,6 +37,7 @@ class SubsidiarySerializer(serializers.ModelSerializer):
             'tagline',
             'description',
             'logo',
+            'header_image',
             'website',
             'style',
             'is_active',

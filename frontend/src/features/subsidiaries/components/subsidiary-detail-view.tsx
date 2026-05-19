@@ -68,6 +68,7 @@ export function SubsidiaryDetailView({
 }: SubsidiaryDetailViewProps) {
   const websiteUrl = normalizeWebsiteUrl(item.website);
   const websiteLabel = getWebsiteLabel(websiteUrl);
+  const headerImage = item.headerImage || "/hero-medical-equipment.png";
 
   return (
     <main dir="rtl" className={cn("min-h-screen bg-neutral-50 dark:bg-neutral-950", rootClassName)}>
@@ -77,7 +78,17 @@ export function SubsidiaryDetailView({
         title={item.name}
         summary={item.tagline}
         iconNode={<SubsidiaryLogoMark item={item} />}
-        mediaClassName="relative overflow-hidden bg-[url(/hero-medical-equipment.png)] bg-cover bg-center before:absolute before:inset-0 before:bg-black/60 [&>*]:relative [&>*]:z-10"
+        mediaClassName="before:absolute before:inset-0 before:z-[1] before:bg-black/60"
+        mediaNode={
+          <Image
+            src={headerImage}
+            alt=""
+            fill
+            sizes="100vw"
+            unoptimized={Boolean(item.headerImage)}
+            className="object-cover"
+          />
+        }
       />
 
       <DetailPageShell
@@ -93,18 +104,6 @@ export function SubsidiaryDetailView({
           </div>
         }
       >
-        <SummaryCard
-          title={
-            <>
-              <IconCheck size={20} className="text-primary-500" />
-              توضیحات
-            </>
-          }
-        >
-          <p className="text-base leading-9 text-neutral-600 dark:text-neutral-300">
-            {item.description}
-          </p>
-        </SummaryCard>
         {item.sections.map((section) => (
           <SummaryCard
             key={section.title}
