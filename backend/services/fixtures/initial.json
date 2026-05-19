@@ -4,7 +4,6 @@
     "pk": 1,
     "fields": {
       "slug": "executive-consulting",
-      "icon_name": "IconUserStar",
       "title": "مشاوره اجرایی",
       "summary": "مشاوره اجرایی با هدف توسعه بازار شرکت‌های تجهیزات پزشکی داخلی و خارجی.",
       "description": "در این خدمت، وضعیت فعلی شرکت، ظرفیت‌های فروش، مسیرهای ورود به بازار، شبکه ارتباطی و مزیت رقابتی بررسی می‌شود تا یک نقشه عملیاتی برای رشد پایدار طراحی شود.",
@@ -23,45 +22,12 @@
           "body": "شرکت‌های تولیدکننده، واردکننده، توزیع‌کننده و برندهای خارجی که قصد ورود یا گسترش حضور در بازار تجهیزات پزشکی ایران را دارند."
         }
       ],
-      "title_en": "Executive Consulting",
-      "summary_en": "Executive consulting focused on market development for domestic and international medical equipment companies.",
-      "description_en": "This service assesses the company's current position, sales capabilities, market-entry paths, relationship network, and competitive advantages to design an actionable growth roadmap.",
-      "tags_en": ["Market development", "Strategy", "Local and global companies"],
-      "sections_en": [
-        {
-          "title": "Main focus",
-          "body": "Helping medical equipment executives make better decisions in market development, sales channels, product positioning, and professional relationships with key market players."
-        },
-        {
-          "title": "Collaboration output",
-          "body": "Diagnostic report, phased action plan, operational recommendations for sales growth, and a framework for tracking growth indicators."
-        },
-        {
-          "title": "Best suited for",
-          "body": "Manufacturers, importers, distributors, and international brands that plan to enter or expand in Iran's medical equipment market."
-        }
-      ],
-      "title_ar": "الاستشارات التنفيذية",
-      "summary_ar": "استشارات تنفيذية بهدف تطوير سوق شركات الأجهزة الطبية المحلية والدولية.",
-      "description_ar": "في هذه الخدمة يتم تحليل وضع الشركة الحالي وقدرات المبيعات ومسارات دخول السوق وشبكة العلاقات والميزة التنافسية لتصميم خارطة طريق عملية للنمو المستدام.",
-      "tags_ar": ["تطوير السوق", "الاستراتيجية", "شركات محلية ودولية"],
-      "sections_ar": [
-        {
-          "title": "التركيز الرئيسي",
-          "body": "مساعدة مديري شركات الأجهزة الطبية على اتخاذ قرارات أفضل في تطوير السوق وقنوات البيع وتموضع المنتج وبناء العلاقات المهنية مع اللاعبين الرئيسيين."
-        },
-        {
-          "title": "مخرجات التعاون",
-          "body": "تقرير تشخيصي، خطة عمل مرحلية، توصيات تنفيذية لتطوير المبيعات، وإطار لمتابعة مؤشرات النمو."
-        },
-        {
-          "title": "مناسب لـ",
-          "body": "الشركات المصنعة والمستوردة والموزعة والعلامات الأجنبية التي ترغب في دخول أو توسيع حضورها في سوق الأجهزة الطبية الإيراني."
-        }
-      ],
+      "icon_key": "user-star",
+      "icon": null,
+      "image": null,
       "highlight": false,
       "is_active": true,
-      "order": 0,
+      "order": 1,
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -71,7 +37,6 @@
     "pk": 2,
     "fields": {
       "slug": "medical-education-program-design",
-      "icon_name": "IconSitemap",
       "title": "طراحی و مدیریت برنامه‌های پزشکی",
       "summary": "طراحی و مدیریت برگزاری سمینار، کنگره پزشکی، دوره‌های آموزشی و کارگاه‌های تخصصی حضوری و آنلاین.",
       "description": "پرشیامهر ساختار علمی، اجرایی و ارتباطی برنامه‌های تخصصی پزشکی را طراحی و مدیریت می‌کند؛ از تعریف هدف و مخاطب تا برنامه‌ریزی محتوایی، هماهنگی ارائه‌دهندگان و اجرای حضوری یا آنلاین.",
@@ -90,45 +55,12 @@
           "body": "این خدمت به سازمان کمک می‌کند آموزش و ارتباط علمی را به یک ابزار جدی برای توسعه بازار، اعتمادسازی و معرفی تخصصی محصول تبدیل کند."
         }
       ],
-      "title_en": "Medical Program Design and Management",
-      "summary_en": "Design and management of seminars, medical congresses, educational courses, and specialized in-person or online workshops.",
-      "description_en": "Persiamehr designs and manages the scientific, operational, and communication structure of specialized medical programs, from objectives and audience definition to content planning and execution.",
-      "tags_en": ["Program design", "Execution management", "Online and in-person"],
-      "sections_en": [
-        {
-          "title": "Scope of service",
-          "body": "Program architecture, content pathway design, scientific coordination, audience management, operational planning, and participant experience quality control."
-        },
-        {
-          "title": "Execution model",
-          "body": "Programs can be held in-person, online, or hybrid and are designed around the needs of brands, hospitals, scientific societies, or medical equipment companies."
-        },
-        {
-          "title": "Organizational value",
-          "body": "This service turns education and scientific communication into a serious tool for market development, trust-building, and specialized product introduction."
-        }
-      ],
-      "title_ar": "تصميم وإدارة البرامج الطبية",
-      "summary_ar": "تصميم وإدارة الندوات والمؤتمرات الطبية والدورات التعليمية وورش العمل المتخصصة حضوريا وعن بعد.",
-      "description_ar": "تصمم پرشیامهر وتدير البنية العلمية والتنفيذية والتواصلية للبرامج الطبية المتخصصة، من تحديد الهدف والجمهور إلى التخطيط المحتوائي والتنسيق والتنفيذ.",
-      "tags_ar": ["تصميم البرامج", "إدارة التنفيذ", "حضوري وعن بعد"],
-      "sections_ar": [
-        {
-          "title": "نطاق الخدمة",
-          "body": "تصميم بنية البرنامج، إعداد المسار المحتوائي، التنسيق العلمي، إدارة الجمهور، التخطيط التنفيذي، وضبط جودة تجربة المشاركين."
-        },
-        {
-          "title": "نموذج التنفيذ",
-          "body": "يمكن تنفيذ البرامج حضوريا أو عن بعد أو بشكل هجين، حسب احتياج العلامة أو المستشفى أو الجمعية العلمية أو شركة الأجهزة الطبية."
-        },
-        {
-          "title": "القيمة للمؤسسة",
-          "body": "تساعد هذه الخدمة على تحويل التعليم والتواصل العلمي إلى أداة فعالة لتطوير السوق وبناء الثقة والتعريف المتخصص بالمنتج."
-        }
-      ],
+      "icon_key": "sitemap",
+      "icon": null,
+      "image": null,
       "highlight": false,
       "is_active": true,
-      "order": 1,
+      "order": 2,
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -138,7 +70,6 @@
     "pk": 3,
     "fields": {
       "slug": "surgical-training-execution",
-      "icon_name": "IconSchool",
       "title": "مجری برگزاری دوره‌های جراحی",
       "summary": "مجری برگزاری دوره‌های جراحی عمومی، جراحی پلاستیک، چاقی، زنان، اندوسکوپی و رباتیک.",
       "description": "این خدمت روی اجرای عملیاتی دوره‌های تخصصی جراحی تمرکز دارد؛ از آماده‌سازی برنامه آموزشی و هماهنگی مدرسین تا مدیریت اجرا، تجهیزات، سناریوهای آموزشی و تجربه شرکت‌کنندگان.",
@@ -157,45 +88,12 @@
           "body": "دوره‌ای منظم، قابل سنجش و حرفه‌ای که برای پزشکان و تیم‌های درمانی تجربه آموزشی کاربردی و استاندارد فراهم کند."
         }
       ],
-      "title_en": "Surgical Training Execution",
-      "summary_en": "Execution of general surgery, plastic surgery, bariatric, gynecology, endoscopy, and robotic surgery courses.",
-      "description_en": "This service focuses on the operational execution of specialized surgical courses, from preparing the educational plan and coordinating instructors to managing equipment, scenarios, and participant experience.",
-      "tags_en": ["General surgery", "Robotics", "Endoscopy"],
-      "sections_en": [
-        {
-          "title": "Specialty areas",
-          "body": "General surgery, plastic surgery, bariatric surgery, gynecology, endoscopy, and robotic surgery are planned based on audience level and educational goals."
-        },
-        {
-          "title": "Operational execution",
-          "body": "Instructor coordination, course scheduling, educational equipment preparation, registration management, execution control, and feedback collection are part of the process."
-        },
-        {
-          "title": "Expected result",
-          "body": "An organized, measurable, and professional course that gives physicians and clinical teams a practical and standardized learning experience."
-        }
-      ],
-      "title_ar": "تنفيذ دورات الجراحة",
-      "summary_ar": "تنفيذ دورات الجراحة العامة والتجميلية وجراحة السمنة والنساء والتنظير والجراحة الروبوتية.",
-      "description_ar": "تركز هذه الخدمة على التنفيذ العملي للدورات الجراحية المتخصصة، من إعداد البرنامج التعليمي وتنسيق المدربين إلى إدارة التنفيذ والتجهيزات والسيناريوهات التعليمية.",
-      "tags_ar": ["الجراحة العامة", "الروبوتية", "التنظير"],
-      "sections_ar": [
-        {
-          "title": "المجالات التخصصية",
-          "body": "الجراحة العامة، التجميلية، جراحة السمنة، النساء، التنظير والجراحة الروبوتية تخطط حسب مستوى الجمهور وهدف البرنامج التعليمي."
-        },
-        {
-          "title": "التنفيذ العملي",
-          "body": "تنسيق المدربين، تصميم جدول الدورة، تجهيز المعدات التعليمية، إدارة التسجيل، مراقبة التنفيذ وجمع الملاحظات هي جزء من العملية."
-        },
-        {
-          "title": "النتيجة المتوقعة",
-          "body": "دورة منظمة وقابلة للقياس واحترافية توفر للأطباء والفرق العلاجية تجربة تعليمية عملية ومعيارية."
-        }
-      ],
+      "icon_key": "school",
+      "icon": null,
+      "image": null,
       "highlight": false,
       "is_active": true,
-      "order": 2,
+      "order": 3,
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }

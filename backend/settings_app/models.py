@@ -4,13 +4,11 @@ from django.db import models
 class SiteSettings(models.Model):
     # Contact info
     address = models.TextField(verbose_name='آدرس', blank=True)
-    address_i18n = models.JSONField(verbose_name='آدرس چندزبانه', default=dict, blank=True)
     phone = models.CharField(max_length=50, verbose_name='شماره تماس', blank=True)
     email = models.EmailField(verbose_name='ایمیل', blank=True)
 
     # About footer
     footer_about = models.TextField(verbose_name='متن درباره ما (فوتر)', blank=True)
-    footer_about_i18n = models.JSONField(verbose_name='متن درباره ما چندزبانه', default=dict, blank=True)
 
     # Social media
     instagram = models.URLField(verbose_name='اینستاگرام', blank=True)

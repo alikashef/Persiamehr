@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 from drf_spectacular.utils import extend_schema_view, extend_schema
 
 from .models import Service
-from .serializers import ServiceLocaleSerializer, ServiceAdminSerializer
+from .serializers import ServiceSerializer, ServiceAdminSerializer
 
 WRITE_ACTIONS = ['create', 'update', 'partial_update', 'destroy']
 
@@ -25,12 +25,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action in WRITE_ACTIONS and self.request.user.is_staff:
             return ServiceAdminSerializer
-        return ServiceLocaleSerializer
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context['lang'] = self.request.query_params.get('lang', 'fa')
-        return context
+        return ServiceSerializer
 
     def get_queryset(self):
         if self.request.user.is_staff:

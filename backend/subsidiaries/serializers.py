@@ -1,21 +1,34 @@
 from rest_framework import serializers
 
-from .models import Subsidiary
+from .models import DepartmentCategory, Subsidiary
 
 
-class SubsidiaryLocaleSerializer(serializers.ModelSerializer):
+class DepartmentCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DepartmentCategory
+        fields = [
+            'id',
+            'title',
+            'slug',
+            'description',
+            'is_active',
+            'order',
+        ]
+
+
+class SubsidiarySerializer(serializers.ModelSerializer):
+    department_category = DepartmentCategorySerializer(read_only=True)
+
     class Meta:
         model = Subsidiary
         fields = [
             'id',
+            'department_category',
             'name',
             'slug',
-            'name_en',
-            'name_i18n',
             'monogram',
             'tagline',
             'description',
-            'description_i18n',
             'logo',
             'website',
             'style',
