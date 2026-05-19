@@ -66,6 +66,7 @@ export type ApiSubsidiary = {
   style: Record<string, string>;
   is_active: boolean;
   order: number;
+  sections: Array<{ title: string; body: string; order: number }>;
 };
 
 export type ApiDepartmentCategory = {

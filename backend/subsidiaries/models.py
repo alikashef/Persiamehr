@@ -48,3 +48,23 @@ class Subsidiary(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class SubsidiarySection(models.Model):
+    subsidiary = models.ForeignKey(
+        Subsidiary,
+        on_delete=models.CASCADE,
+        related_name='sections',
+        verbose_name='زیرمجموعه',
+    )
+    title = models.CharField(max_length=200, verbose_name='عنوان')
+    body = models.TextField(verbose_name='متن')
+    order = models.PositiveIntegerField(default=0, verbose_name='ترتیب نمایش')
+
+    class Meta:
+        verbose_name = 'بخش توضیحی'
+        verbose_name_plural = 'بخش‌های توضیحی'
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.subsidiary.name} — {self.title}"
