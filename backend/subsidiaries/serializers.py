@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import DepartmentCategory, Subsidiary
+from .models import DepartmentCategory, Subsidiary, SubsidiarySection
 
 
 class DepartmentCategorySerializer(serializers.ModelSerializer):
@@ -16,8 +16,15 @@ class DepartmentCategorySerializer(serializers.ModelSerializer):
         ]
 
 
+class SubsidiarySectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubsidiarySection
+        fields = ['title', 'body', 'order']
+
+
 class SubsidiarySerializer(serializers.ModelSerializer):
     department_category = DepartmentCategorySerializer(read_only=True)
+    sections = SubsidiarySectionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Subsidiary
@@ -35,6 +42,7 @@ class SubsidiarySerializer(serializers.ModelSerializer):
             'style',
             'is_active',
             'order',
+            'sections',
         ]
 
 

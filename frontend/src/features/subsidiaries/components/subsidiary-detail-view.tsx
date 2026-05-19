@@ -3,7 +3,6 @@ import Image from "next/image";
 import ScrollReveal from "@/components/ui/scroll-reveal";
 import { DetailHero } from "@/components/common/detail-hero";
 import { DetailPageShell } from "@/components/common/detail-page-shell";
-import { ContentSectionList } from "@/components/common/content-section-list";
 import { SummaryCard } from "@/components/common/summary-card";
 import type { SubsidiaryItem } from "@/features/subsidiaries/types";
 import { SubsidiaryWebsiteCard } from "@/features/subsidiaries/components/subsidiary-website-card";
@@ -105,21 +104,21 @@ export function SubsidiaryDetailView({
           </div>
         }
       >
-        <SummaryCard
-          title={
-            <>
-              <IconCheck size={20} className="text-primary-500" />
-              توضیحات
-            </>
-          }
-        >
-          <p className="text-base leading-9 text-neutral-600 dark:text-neutral-300">
-            {item.description}
-          </p>
-        </SummaryCard>
-        
-        
-        <ContentSectionList sections={item.sections} />
+        {item.sections.map((section) => (
+          <SummaryCard
+            key={section.title}
+            title={
+              <>
+                <IconCheck size={20} className="text-primary-500" />
+                {section.title}
+              </>
+            }
+          >
+            <p className="text-base leading-9 text-neutral-600 dark:text-neutral-300">
+              {section.body}
+            </p>
+          </SummaryCard>
+        ))}
       </DetailPageShell>
     </main>
   );

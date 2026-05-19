@@ -1,10 +1,10 @@
 from django import forms
 from django.contrib import admin
 from django.utils.text import slugify
-from unfold.admin import ModelAdmin
+from unfold.admin import ModelAdmin, TabularInline
 from unfold.widgets import UnfoldAdminTextareaWidget
 
-from .models import DepartmentCategory, Subsidiary
+from .models import DepartmentCategory, Subsidiary, SubsidiarySection
 
 
 TEXTAREA_ATTRS = {
@@ -55,9 +55,18 @@ class SubsidiaryAdminForm(forms.ModelForm):
         return obj
 
 
+class SubsidiarySectionInline(TabularInline):
+    model = SubsidiarySection
+    extra = 1
+    fields = ['title', 'body', 'order']
+    verbose_name = 'بخش توضیحی'
+    verbose_name_plural = 'بخش‌های توضیحی'
+
+
 @admin.register(Subsidiary)
 class SubsidiaryAdmin(ModelAdmin):
     form = SubsidiaryAdminForm
+    inlines = [SubsidiarySectionInline]
     list_display = ['name', 'website', 'is_active', 'order', 'created_at']
     list_editable = ['is_active', 'order']
     search_fields = ['name', 'description']

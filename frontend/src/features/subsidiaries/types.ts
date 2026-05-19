@@ -141,7 +141,7 @@ export function mapApiSubsidiary(record: ApiSubsidiary): SubsidiaryItem {
     website: record.website ?? "",
     tagline: record.tagline,
     description: record.description,
-    sections: [],
+    sections: (record.sections ?? []).map(({ title, body }) => ({ title, body })),
     tags: [],
   };
 }
