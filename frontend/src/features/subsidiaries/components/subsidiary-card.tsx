@@ -13,6 +13,7 @@ type Props = {
 };
 
 export default function SubsidiaryCard({ item, viewBrandLabel }: Props) {
+  const headerImage = item.headerImage || "/hero-medical-equipment.png";
   const maxDescriptionLength = 120;
   const limitedDescription =
     item.description.length > maxDescriptionLength
@@ -21,23 +22,30 @@ export default function SubsidiaryCard({ item, viewBrandLabel }: Props) {
 
   return (
     <Card
-      className={`card-hover group flex overflow-hidden rounded-2xl bg-white p-0 ${item.borderColor} dark:border-white/10 dark:bg-neutral-900/80 dark:shadow-[0_22px_55px_rgb(0,0,0,0.32)]`}
+      className={`card-hover subsidiary-card group/subsidiary-card flex overflow-hidden rounded-2xl bg-white p-0 ${item.borderColor} dark:border-white/10 dark:bg-neutral-900/80 dark:shadow-[0_22px_55px_rgb(0,0,0,0.32)]`}
     >
       <CardContent className="flex h-full flex-col p-0">
-        <div className={`relative overflow-hidden bg-gradient-to-br ${item.pattern} ${item.darkPattern} p-6`}>
-          <div className="absolute left-5 top-5 h-16 w-16 rounded-full border border-white/80 bg-white/40 blur-sm dark:border-white/10 dark:bg-white/5" />
-          <div className="absolute -right-12 -top-12 hidden h-32 w-32 rounded-full bg-white/45 blur-2xl dark:block dark:bg-white/5" />
-          <div className="relative flex items-start justify-between gap-4">
+        <div className="relative overflow-hidden bg-neutral-900 p-5">
+          <Image
+            src={headerImage}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 20vw"
+            unoptimized={Boolean(item.headerImage)}
+            className="subsidiary-card-image object-cover transition-all duration-500 group-hover/subsidiary-card:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/55 to-black/15" />
+          <div className="relative flex min-h-24 items-end justify-between gap-4">
             <div className="flex items-center gap-4">
               <div
-                className={`flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${item.logoGradient} text-lg font-black tracking-wide text-white shadow-lg shadow-black/10 ring-1 ring-white/35 dark:shadow-black/35 dark:ring-white/15`}
+                className={`flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${item.logoGradient} text-base font-black tracking-wide text-white shadow-lg shadow-black/20 ring-1 ring-white/35 dark:shadow-black/35 dark:ring-white/15`}
               >
                 {item.logo ? (
                   <Image
                     src={item.logo}
                     alt={item.name}
-                    width={64}
-                    height={64}
+                    width={56}
+                    height={56}
                     unoptimized
                     className="h-full w-full bg-white object-contain p-1.5"
                   />
@@ -45,11 +53,9 @@ export default function SubsidiaryCard({ item, viewBrandLabel }: Props) {
                   item.monogram
                 )}
               </div>
-              <div>
-                <CardTitle className="text-xl font-black text-neutral-900 transition-colors group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-300">
-                  {item.name}
-                </CardTitle>
-              </div>
+              <CardTitle className="text-lg font-black text-white drop-shadow-lg transition-colors group-hover/subsidiary-card:text-primary-100">
+                {item.name}
+              </CardTitle>
             </div>
           </div>
         </div>

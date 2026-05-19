@@ -7,6 +7,7 @@ export const copy = {
     productsEyebrow: "محصولات آموزشی",
     consult: "درخواست مشاوره",
     displayMode: "حالت نمایش",
+    medicalRoyalClub:  "مدیکال رویال کلاب",
   },
   consultation: {
     title: "درخواست مشاوره",
@@ -27,8 +28,8 @@ export const copy = {
   },
   hero: {
     eyebrow: "هلدینگ تخصصی تجهیزات پزشکی ایران",
-    titlePrefix: "مدیریت هوشمندانه منابع در",
-    titleHighlight: "اکوسیستم صنعت",
+    titlePrefix: "رهبری هوشمندانه در ",
+    titleHighlight: "اکوسیستم سلامت",
     titleSuffix: "پزشکی",
     scroll: "اسکرول کنید",
     stats: [
@@ -48,12 +49,12 @@ export const copy = {
     more: "بیشتر بدانید",
   },
   subsidiaries: {
-    titlePrefix: " دپارتمان های زیر مجموعه",
+    titlePrefix: " دپارتمان های زیر مجموعه پرشیامهر",
     titleHighlight: " پرشیامهر",
     description:
-      "دپارتمان های زیر مجموعه پرشیامهر هر کدام بخشی از زنجیره تخصصی تجهیزات، ارتباطات، فناوری و آموزش را پوشش میدهند",
+     "دپارتمان های زیرمجموعه پرشیامهر در دو بخش آموزشی و بازرگانی هرکدام بعنوان حلقه ای از زنجیره اکوسیستم سلامت فرصت های شما را به توسعه پایدار تبدیل میکنند",
     all: "مشاهده همه",
-    viewBrand: "مشاهده برند",
+    viewBrand: "ادامه",
   },
   footer: {
     description:

@@ -33,12 +33,16 @@ export default function Hero() {
             <span className="truncate">{t.eyebrow}</span>
           </div>
 
-          <h1 className="mx-auto mb-5 font-black text-white drop-shadow-[0_8px_24px_rgb(0,0,0,0.28)] sm:mb-7 sm:text-4xl sm:leading-[1.2] md:text-5xl lg:text-6xl lg:leading-[1.16]">
+          <h1 className="mx-auto mb-5 w-xl  font-black text-white drop-shadow-[0_8px_24px_rgb(0,0,0,0.28)] sm:mb-7 sm:text-4xl sm:leading-[1.2] md:text-5xl lg:text-6xl lg:leading-[1.16]">
             {t.titlePrefix}{" "}
             <span className="text-primary-200">
-              {t.titleHighlight} {t.titleSuffix}
+              {t.titleHighlight}
             </span>
           </h1>
+
+          <p className="mx-auto max-w-3xl text-sm font-medium leading-7 text-white/78 sm:text-base sm:leading-8">
+            {t.subtitle}
+          </p>
 
           <div className="mx-auto mt-9 grid max-w-2xl grid-cols-2 gap-x-4 gap-y-4 border-t border-white/15 pt-5 sm:mt-12 sm:grid-cols-4 sm:gap-x-8 sm:gap-y-5 sm:pt-7">
             {t.stats.map((stat) => (

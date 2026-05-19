@@ -341,6 +341,14 @@ a, button {
 }
 
 @layer utilities {
+  .subsidiary-card-image {
+    filter: blur(1.5px);
+  }
+
+  .subsidiary-card:hover .subsidiary-card-image {
+    filter: blur(0);
+  }
+
   .dark body {
     color-scheme: dark;
   }

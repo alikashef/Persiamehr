@@ -16,6 +16,7 @@ export type SubsidiaryItem = {
   department: Department;
   monogram: string;
   logo: string;
+  headerImage: string;
   website: string;
   tagline: string;
   description: string;
@@ -113,16 +114,16 @@ function resolveDepartment(record: ApiSubsidiary): Department {
   return haystack.includes("دوره") || haystack.includes("آموز") ? "education" : "commerce";
 }
 
-function resolveLogoUrl(logo: string | null) {
-  if (!logo) {
+function resolveMediaUrl(path: string | null) {
+  if (!path) {
     return "";
   }
 
-  if (logo.startsWith("http://") || logo.startsWith("https://") || logo.startsWith("/")) {
-    return logo;
+  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("/")) {
+    return path;
   }
 
-  return `/media/${logo}`;
+  return `/media/${path}`;
 }
 
 export function mapApiSubsidiary(record: ApiSubsidiary): SubsidiaryItem {
@@ -135,7 +136,8 @@ export function mapApiSubsidiary(record: ApiSubsidiary): SubsidiaryItem {
     slug: record.slug,
     department: resolveDepartment(record),
     monogram: record.monogram,
-    logo: resolveLogoUrl(record.logo),
+    logo: resolveMediaUrl(record.logo),
+    headerImage: resolveMediaUrl(record.header_image),
     website: record.website ?? "",
     tagline: record.tagline,
     description: record.description,

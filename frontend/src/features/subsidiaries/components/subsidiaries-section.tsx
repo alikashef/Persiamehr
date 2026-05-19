@@ -35,28 +35,28 @@ export default async function Subsidiaries() {
   const t = copy.subsidiaries;
 
   return (
-    <section id="subsidiaries" dir="rtl" className="bg-neutral-50 py-24 text-right dark:bg-neutral-950">
-      <div className="mx-auto max-w-[1440px] px-6 lg:px-16">
-        <div className="mb-16 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+    <section
+      id="subsidiaries"
+      dir="rtl"
+      className="bg-neutral-50 py-24 text-right dark:bg-neutral-950"
+    >
+      <div className="mx-auto  px-6 lg:px-16">
+        <div className="mb-16 ">
           <div>
-            <h2 className="mb-4 text-3xl font-bold leading-tight text-neutral-900 md:text-4xl">
-              {t.titlePrefix} <span className="gradient-text">{t.titleHighlight}</span>
+            <h2 className="mb-4 text-xl text-center font-bold leading-tight text-neutral-900 md:text-3xl">
+              {t.titlePrefix}{" "}
+              <span className="gradient-text">{t.titleHighlight}</span>
+              
             </h2>
-            <p className="text-base leading-7 text-neutral-500">{t.description}</p>
+            <p className="text-base text-center leading-7 text-neutral-500">
+              {t.description}
+            </p>
           </div>
           <Button
             asChild
             variant="ghost"
             className="shrink-0 text-sm font-semibold text-primary-600 hover:text-primary-800"
-          >
-            <Link href="/contact">
-              {t.all}
-              <IconArrowLeft
-                size={16}
-                className="transition-transform group-hover/button:-translate-x-0.5"
-              />
-            </Link>
-          </Button>
+          ></Button>
         </div>
 
         <SubsidiaryDepartmentTabs
